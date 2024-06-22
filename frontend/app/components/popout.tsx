@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Image from 'react';
 import CloseButton from './close_button'
+import { TbBinaryTree } from "react-icons/tb";
 
 function Popout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -79,9 +80,15 @@ function Popout() {
           {/* Popup Window */}
           <div className="w-2/3 h-3/4 bg-white p-4 rounded-lg shadow-lg">
 
-            <div className=''>
-
-            </div>
+            {/* loading screen */}
+            {loading && (<div className='flex items-center justify-center h-screen'>
+              <div className="flex-col gap-4 w-full flex items-center justify-center">
+                {/* tuff binary tree */}
+                <div className="w-80 h-80 border-8 text-green-400 text-4xl animate-spin border-gray-300 flex items-center justify-center border-t-green-400 rounded-full">
+                  <TbBinaryTree className="w-40 h-40" /> 
+                </div>
+              </div>
+            </div>)}
 
             <h2 className="text-3xl font-bold mb-4 text-stone-700">Upload Your Image</h2>
 
@@ -117,6 +124,9 @@ function Popout() {
                 <div className="text-black justify-start text-left text-6xl pt-12">
                    {response}
                 </div>
+                <div className="text-black justify-start text-left text-6xl pt-12">
+                </div>
+                {/* HERE */}
               </div>
               <button type="button" onClick={(e) => {e.preventDefault(), handleSubmission();}} className="bg-emerald-500 text-white py-2 px-4 rounded-md hover:bg-emerald-800">Analyze</button>
               <CloseButton onClick={() => {closeModal(); changeImage(null);}}/>

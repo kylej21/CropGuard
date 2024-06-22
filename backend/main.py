@@ -41,11 +41,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+processor = AutoImageProcessor.from_pretrained("Professor/CGIAR-Crop-disease")
+model = AutoModelForImageClassification.from_pretrained("Professor/CGIAR-Crop-disease")
 
 def model_forward(image: Image):
-    processor = AutoImageProcessor.from_pretrained("Professor/CGIAR-Crop-disease")
-    model = AutoModelForImageClassification.from_pretrained("Professor/CGIAR-Crop-disease")
+    
     
     # Preprocess the image
     inputs = processor(images=image, return_tensors="pt")
@@ -102,7 +102,12 @@ async def receive_file(file: UploadFile = File(...), extension: str = Form(...))
         return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"message": str(e)})
 
 
+@app.get("/generate/{prompt}")
+def generateSolution(prompt: str):
+    response =""
 
+
+    return {"response":prompt}
 #Uvicorn routing setup
 if __name__ == "__main__":
     uvicorn.run("main:app", port=5000, reload=True)
