@@ -6,6 +6,8 @@ import CloseButton from './close_button'
 function Popout() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   let [image, changeImage] = useState<File | null>(null);
+  let [response, changeResponse] = useState("Threat to plant is: ");
+  let [loading, changeLoading] = useState(false);
 
   const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -20,6 +22,39 @@ function Popout() {
   const closeModal = () => {
     setIsModalOpen(false);
   };
+
+  async function handleSubmission()
+  {
+    if (loading || !image) return;
+
+    changeLoading(true);
+    console.log("Submitting: " + image);
+
+    // body of POST request to send image
+    const formData = new FormData();
+    formData.append("file", image, image.name);
+    formData.append("extension", image.name.split(".").pop() || "");
+    console.log(image.name);
+
+    // make post request, and display prompt result
+    const requestOptions = {
+      method: "POST",
+      body: formData,
+    };
+    await fetch("http://127.0.0.1:5000/upload/", requestOptions)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        if(data["status"]=="healthy"){
+          changeResponse("No threat! Plant is Healthy!")
+        }
+        else{
+          changeResponse("Threat to plant is: " + data["status"])
+        }
+        //setResponse(data["generated"]);
+      });
+    changeLoading(false);
+  }
 
   return (
     <div className="w-screen flex justify-center items-center h-screen">
@@ -43,7 +78,12 @@ function Popout() {
           
           {/* Popup Window */}
           <div className="w-2/3 h-3/4 bg-white p-4 rounded-lg shadow-lg">
-            <h2 className="text-xl font-bold mb-4">Upload Your Image</h2>
+
+            <div className=''>
+
+            </div>
+
+            <h2 className="text-3xl font-bold mb-4 text-stone-700">Upload Your Image</h2>
 
             <form className='h-full'>
                
@@ -53,7 +93,7 @@ function Popout() {
                   
                   {/* Upload button */}
                   <div className=' scale-150 flex h-30 w-1/3 items-center rounded-md border-input px-3 py-2 text-sm text-gray-400 file:border-0 file:bg-transparent file:text-gray-600 file:text-sm file:font-medium'>
-                    <label className="flex bg-emerald-300 hover:bg-emerald-400 text-white text-base px-5 py-3 outline-none rounded w-max cursor-pointer mx-auto font-[sans-serif]">
+                    <label className="flex bg-emerald-500 hover:bg-emerald-700 text-white text-base px-5 py-3 outline-none rounded w-max cursor-pointer mx-auto font-[sans-serif]">
                     <svg xmlns="http://www.w3.org/2000/svg" className="w-6 mr-2 fill-white inline" viewBox="0 0 32 32">
                       <path
                         d="M23.75 11.044a7.99 7.99 0 0 0-15.5-.009A8 8 0 0 0 9 27h3a1 1 0 0 0 0-2H9a6 6 0 0 1-.035-12 1.038 1.038 0 0 0 1.1-.854 5.991 5.991 0 0 1 11.862 0A1.08 1.08 0 0 0 23 13a6 6 0 0 1 0 12h-3a1 1 0 0 0 0 2h3a8 8 0 0 0 .75-15.956z"
@@ -74,9 +114,11 @@ function Popout() {
                       )}
                   </div>
                 </div>
-                
+                <div className="text-black justify-start text-left text-6xl pt-12">
+                   {response}
+                </div>
               </div>
-              <button type="submit" className="bg-emerald-500 text-white py-2 px-4 rounded-md hover:bg-emerald-800">Analyze</button>
+              <button type="button" onClick={(e) => {e.preventDefault(), handleSubmission();}} className="bg-emerald-500 text-white py-2 px-4 rounded-md hover:bg-emerald-800">Analyze</button>
               <CloseButton onClick={() => {closeModal(); changeImage(null);}}/>
             </form>
           </div>

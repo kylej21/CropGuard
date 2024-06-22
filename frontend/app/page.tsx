@@ -33,6 +33,7 @@ export default function Home() {
 
               {/* Sometimes u gotta */}
               <Popout/>
+              {/* and show them */}
       
               </div>
             </div>
