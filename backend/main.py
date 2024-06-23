@@ -22,7 +22,7 @@
 # CREATE TABLE submissions (
 #     id INT AUTO_INCREMENT PRIMARY KEY,
 #     username VARCHAR(255) NOT NULL,
-#     image LONGBLOB,
+#     result TEXT,
 #     description TEXT,
 #     FOREIGN KEY (username) REFERENCES users(username)
 # );
@@ -99,11 +99,11 @@ def model_forward(image: Image) -> str:
 
     # Define the label mapping
     mapping = {
-        'Pepper__bell___Bacterial_spot': 'Pepper bell bacterial spot',
-        'Pepper__bell___healthy': 'Pepper bell healthy',
+        'Pepper__bell___Bacterial_spot': 'Bell pepper bacterial spot',
+        'Pepper__bell___healthy': 'healthy',
         'Potato___Early_blight': 'Potato early blight',
         'Potato___Late_blight': 'Potato late blight',
-        'Potato___healthy': 'Potato healthy',
+        'Potato___healthy': 'healthy',
         'Tomato_Bacterial_spot': 'Tomato bacterial spot',
         'Tomato_Early_blight': 'Tomato early blight',
         'Tomato_Late_blight': 'Tomato late blight',
@@ -113,7 +113,7 @@ def model_forward(image: Image) -> str:
         'Tomato__Target_Spot': 'Tomato target spot',
         'Tomato__Tomato_YellowLeaf__Curl_Virus': 'Tomato tomato yellowleaf curl virus',
         'Tomato__Tomato_mosaic_virus': 'Tomato tomato mosaic virus',
-        'Tomato_healthy': 'Tomato healthy'
+        'Tomato_healthy': 'healthy'
     }
 
     # Get the predicted class label from the model's result
@@ -171,8 +171,8 @@ async def receive_file(file: UploadFile = File(...), extension: str = Form(...),
         # save image to SQL DB
         bytes_data = io.BytesIO(request_object_content).read()
         base64_data = base64.b64encode(bytes_data).decode('utf-8')
-        params = (username, base64_data, out)
-        query = "INSERT INTO submissions (username, image, description) VALUES (?, ?, ?)"
+        params = (username, response, out)
+        query = "INSERT INTO submissions (username, result, description) VALUES (?, ?, ?)"
         cursor.execute(query, params)
         conn.commit()
 
@@ -180,6 +180,32 @@ async def receive_file(file: UploadFile = File(...), extension: str = Form(...),
 
     except Exception as e:
         return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"message": str(e)})
+
+@app.get("/occurences/{username}")
+async def getOccurences(username: str):
+    cursor.execute("SELECT result, description FROM submissions WHERE username=?", (username,))
+    results = cursor.fetchall()
+    results = [r[0] for r in results]
+
+    counter = [(r, results.count(r)) for r in results]
+    counter.sort(key=lambda tup: tup[1])
+    top5 = [c for _, c in counter[:min(5, len(counter))]]
+    
+    return {"array": top5}   
+
+@app.get("/categories/{username}")
+async def getCategories(username: str):
+    cursor.execute("SELECT result, description FROM submissions WHERE username=?", (username,))
+    results = cursor.fetchall()
+    results = [r[0] for r in results]
+    print("RESULTS: ", results)
+
+    counter = [(r, results.count(r)) for r in results]
+    counter.sort(key=lambda tup: tup[1])
+    top5 = [r for r, _ in counter[:min(len(counter),5)]]
+    # [(potato, ...), (tomato, ...), ...]
+    print("TOP5: ",top5)
+    return {"array": top5}  
 
 
 
@@ -210,11 +236,11 @@ async def login(username:str = Form(...), password:str = Form(...)):
     
 @app.post("/submissions")
 async def user_submissions(username: str = Form(...)):
-    query = "SELECT image, description FROM submissions WHERE username=?"
+    query = "SELECT result, description FROM submissions WHERE username=?"
     cursor.execute(query, (username,))
 
     results = cursor.fetchall()
-    print(results[0][0])
+    print(results)
     return {"submissions": results}
 
 

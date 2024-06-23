@@ -1,18 +1,21 @@
 'use client'
-import { useState } from 'react';
+import { useState ,useEffect} from 'react';
 import CloseButton from './close_button';
 import SubmissionResult from './submission_result';
 import title from '../public/newTitle.png'
 import ImageList from "./ImageList"
+import IndexPage from "./barchartcanvas"
 interface DashProps
 {
     username: string,
 }
 
+
 function Dash({ username }: DashProps)
 {
     const [isCanvasOpen, setIsCanvasOpen] = useState(false);
     const [images, setImages] = useState<[string, string][]>([]);
+    const [chartData, setChartData] = useState<any>(null); // Adjust type as per your data structure
     const openModal = () => {
         setIsCanvasOpen(true);
     };
@@ -20,6 +23,8 @@ function Dash({ username }: DashProps)
     const closeModal = () => {
         setIsCanvasOpen(false);
     };
+
+
 
     // Gets submissions JSON information of user's data
     async function getData() {
@@ -31,7 +36,7 @@ function Dash({ username }: DashProps)
         body: formData,
       };
 
-      let data = fetch("http://127.0.0.1:5000/submissions/", requestOptions)
+      let data = await fetch("http://127.0.0.1:5000/submissions", requestOptions)
             .then((res) => res.json())
             .then((data) => { 
               console.log("data: " +data);
@@ -39,49 +44,18 @@ function Dash({ username }: DashProps)
             }).then((data)=>{
               return data["submissions"]!;
             });
+            console.log(data);
+            setImages(data);
+
       return data;
     }
-
-    async function populateList()
-    {
-        // [bytes, description]
-        let submissions: [Uint8Array, string][] = await getData();
-
-        let modified: [string, string][] = await Promise.all(
-          submissions.map(async ([image_bytes, desc]) => {
-            console.log("image_bytes: " + image_bytes)
-            const blob = new Blob([image_bytes], { type: 'image/jpeg' });
-            const imageURL = URL.createObjectURL(blob);
-            console.log("url: "+imageURL)
-            console.log('Blob type:', blob.type);
-
-            const img = new Image();
-            img.onload = function() {
-            console.log('Image loaded successfully');
-            // Perform further actions if needed
-            };
-      img.onerror = function() {
-        console.error('Failed to load image');
-        // Handle error scenario
-      };
-      img.src = imageURL;  // Assign the Blob URL to the image src attribute
-
-
-            return [imageURL, desc];
-          })
-        );
-        //setImages(modified)
-       
-        console.log("submissions: " + submissions)
-        console.log("modified: " + modified)
-        return modified
-    }
+    
 
     return (
       <div className="w-full flex items-center justify-center">
         <div className="w-full">
           <button className="border-black bg-emerald-700 border-2 justify-center text-center w-full p-4 z-50 rounded-lg hover:bg-emerald-800 text-4xl text-white"
-                    onClick={() => {openModal(); populateList(); console.log("Dashboard clicked");}}>
+                    onClick={() => {openModal(); getData(); console.log("Dashboard clicked");}}>
             <b>Dashboard</b>
           </button>
         </div>
@@ -101,9 +75,13 @@ function Dash({ username }: DashProps)
               <ImageList images={images} />
 
             </div>
-            <div>
-              statistics
-            </div>
+            <div className="w-1/2 text-center text-5xl">
+              
+
+              
+
+               <IndexPage username={username}/>            
+              </div>
             </div>
           </div>
           <CloseButton onClick={closeModal}/>
