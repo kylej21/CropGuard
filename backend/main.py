@@ -32,6 +32,8 @@
 import os
 import tempfile
 import pathlib
+import base64
+import json
 
 #FASTAPI imports
 import uvicorn
@@ -168,7 +170,8 @@ async def receive_file(file: UploadFile = File(...), extension: str = Form(...),
 
         # save image to SQL DB
         bytes_data = io.BytesIO(request_object_content).read()
-        params = (username, bytes_data, out)
+        base64_data = base64.b64encode(bytes_data).decode('utf-8')
+        params = (username, base64_data, out)
         query = "INSERT INTO submissions (username, image, description) VALUES (?, ?, ?)"
         cursor.execute(query, params)
         conn.commit()
@@ -208,11 +211,10 @@ async def login(username:str = Form(...), password:str = Form(...)):
 @app.post("/submissions")
 async def user_submissions(username: str = Form(...)):
     query = "SELECT image, description FROM submissions WHERE username=?"
-    cursor.execute(query, (username))
+    cursor.execute(query, (username,))
 
     results = cursor.fetchall()
-    print(results)
-
+    print([r[0] for r in results])
     return {"submissions": results}
 
 
