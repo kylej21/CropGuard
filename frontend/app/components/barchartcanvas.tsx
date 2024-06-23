@@ -1,14 +1,14 @@
-import React from 'react';
-import BarChart from './barchart';
+import React from "react";
+import BarChart from "./barchart";
 
 interface BarChartProps {
-    username: string;
-  }
+  username: string;
+}
 const ExamplePage: React.FC<BarChartProps> = ({ username }) => {
   return (
     <div>
       <h1>Bar Chart Example</h1>
-      <BarChart username={username}/>
+      <BarChart username={username} />
     </div>
   );
 };

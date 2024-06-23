@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import Chart from 'chart.js/auto';
+import React, { useEffect, useRef, useState } from "react";
+import Chart from "chart.js/auto";
 
 interface BarChartProps {
   username: string;
@@ -15,11 +15,19 @@ const BarChart: React.FC<BarChartProps> = ({ username }) => {
     // Simulated data update or API fetch
     const fetchData = async () => {
       // Replace with your data fetching logic
-      let categories = await fetch("http://127.0.0.1:5000/categories/"+username).then((res)=>res.json()).then((res)=>res["array"]); 
-      let occurences = await fetch("http://127.0.0.1:5000/occurences/"+username).then((res)=>res.json()).then((res)=>res["array"]); // Example data: number of occurrences
-      console.log("OCCURENCES: " + occurences)
-      console.log("CATEGORIES: " + categories) 
-      
+      let categories = await fetch(
+        "http://127.0.0.1:5000/categories/" + username,
+      )
+        .then((res) => res.json())
+        .then((res) => res["array"]);
+      let occurences = await fetch(
+        "http://127.0.0.1:5000/occurences/" + username,
+      )
+        .then((res) => res.json())
+        .then((res) => res["array"]); // Example data: number of occurrences
+      console.log("OCCURENCES: " + occurences);
+      console.log("CATEGORIES: " + categories);
+
       setNumOccurrences(occurences);
       setOccurrenceTypes(categories);
     };
@@ -28,24 +36,28 @@ const BarChart: React.FC<BarChartProps> = ({ username }) => {
   }, [username]); // Fetch data on component mount
 
   useEffect(() => {
-    if (chartRef.current && numOccurrences.length > 0 && occurrenceTypes.length > 0) {
+    if (
+      chartRef.current &&
+      numOccurrences.length > 0 &&
+      occurrenceTypes.length > 0
+    ) {
       // Destroy previous chart instance if exists
       if (chartInstance.current) {
         chartInstance.current.destroy();
       }
 
-      const ctx = chartRef.current.getContext('2d');
+      const ctx = chartRef.current.getContext("2d");
       if (ctx) {
         chartInstance.current = new Chart(ctx, {
-          type: 'bar',
+          type: "bar",
           data: {
             labels: occurrenceTypes,
             datasets: [
               {
-                label: 'Occurrences',
+                label: "Occurrences",
                 data: numOccurrences,
-                backgroundColor: 'rgba(41, 248, 201, 0.2)',
-                borderColor: 'rgba(41, 248, 201, 1)',
+                backgroundColor: "rgba(41, 248, 201, 0.2)",
+                borderColor: "rgba(41, 248, 201, 1)",
                 borderWidth: 1,
               },
             ],
