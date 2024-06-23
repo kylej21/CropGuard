@@ -36,8 +36,4 @@ function CloseButton({ onClick }: CloseButtonProps)
     )
 }
 
-CloseButton.defaultProps = {
-    onClick: () => {},
-};
-
 export default CloseButton;
