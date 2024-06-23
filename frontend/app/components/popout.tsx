@@ -39,7 +39,7 @@ function Popout({ username }: DashProps) {
     const formData = new FormData();
     formData.append("file", image, image.name);
     formData.append("extension", image.name.split(".").pop() || "");
-    formData.append("username", );
+    formData.append("username", username);
     console.log(image.name);
 
     // make post request, and display prompt result

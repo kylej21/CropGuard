@@ -167,9 +167,11 @@ async def receive_file(file: UploadFile = File(...), extension: str = Form(...),
         temp_file_path.unlink()
 
         # save image to SQL DB
-        bytes_data = io.BytesIO(request_object_content)
+        bytes_data = io.BytesIO(request_object_content).read()
         params = (username, bytes_data, out)
         query = "INSERT INTO submissions (username, image, description) VALUES (?, ?, ?)"
+        cursor.execute(query, params)
+        conn.commit()
 
         return {"status":response, "explanation": out}
 
@@ -189,12 +191,17 @@ async def login(username:str = Form(...), password:str = Form(...)):
     print(user)
     if user:        
         print(f"Logged in as: {username}")
-        return {"user":user}
+        return {"status":"logged in"}
     else:
-        cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
-        conn.commit()
-        print("Account created")
-        return {"created":username}
+        cursor.execute('SELECT * FROM users WHERE username=?', (username,))
+        user = cursor.fetchone()
+        if user:
+            return {"status":"Incorrect Password"}
+        else:
+            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+            conn.commit()
+            print("Account created")
+            return {"status":"Account created"}
     
     
     
