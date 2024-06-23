@@ -11,6 +11,7 @@
 #operational imports
 import os
 import tempfile
+import pathlib
 
 #FASTAPI imports
 import uvicorn
@@ -19,13 +20,31 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 #Model imports
-import torch
-from PIL import Image
-from transformers import AutoImageProcessor, AutoModelForImageClassification
+from transformers import pipeline
 
 # image processing imports
 from PIL import Image
 import io
+
+# genai imports
+import google.generativeai as genai
+from IPython.display import display, Markdown
+import textwrap
+
+# set up model
+genai.configure(api_key="AIzaSyAZGdzC8i8YOMojZMCGXLkQirVp6X4bYDs")
+model = genai.GenerativeModel('gemini-1.5-flash')
+
+# REQUIRED FOR GEMINI API
+# imputs must be converted to markdown when returned
+def to_markdown(text):
+  text = text.replace('•', '  *')
+  return textwrap.indent(text, '> ', predicate=lambda _: True)
+
+# text input -> text output using Gemini API
+def generateValue(input):
+    response = model.generate_content(input)
+    return to_markdown(response.text)
 
 
 #FASTAPI setup
@@ -41,37 +60,51 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-processor = AutoImageProcessor.from_pretrained("Professor/CGIAR-Crop-disease")
-model = AutoModelForImageClassification.from_pretrained("Professor/CGIAR-Crop-disease")
+pipe = pipeline("gianlab/swin-tiny-patch4-window7-224-finetuned-plantdisease")
 
-def model_forward(image: Image):
-    
-    
-    # Preprocess the image
-    inputs = processor(images=image, return_tensors="pt")
-    
-    # Get model predictions
-    outputs = model(**inputs)
-    logits = outputs.logits
-    
-    # Apply softmax to get probabilities
-    probabilities = torch.nn.functional.softmax(logits, dim=-1)
-    
-    # Get the predicted class index
-    predicted_class_idx = probabilities.argmax(-1).item()
-    
+def model_forward(image: Image) -> str:
+
+    # Perform image classification
+    results = pipe(image)
+
+    # Define the label mapping
     mapping = {
-        0: "weed",
-        1: "disease",
-        2: "healthy",
-        3: "drought",
-        4: "nutrient deficiency",
+        'Pepper__bell___Bacterial_spot': 'Pepper bell bacterial spot',
+        'Pepper__bell___healthy': 'Pepper bell healthy',
+        'Potato___Early_blight': 'Potato early blight',
+        'Potato___Late_blight': 'Potato late blight',
+        'Potato___healthy': 'Potato healthy',
+        'Tomato_Bacterial_spot': 'Tomato bacterial spot',
+        'Tomato_Early_blight': 'Tomato early blight',
+        'Tomato_Late_blight': 'Tomato late blight',
+        'Tomato_Leaf_Mold': 'Tomato leaf mold',
+        'Tomato_Septoria_leaf_spot': 'Tomato septoria leaf spot',
+        'Tomato_Spider_mites_Two_spotted_spider_mite': 'Tomato spider mites two spotted spider mite',
+        'Tomato__Target_Spot': 'Tomato target spot',
+        'Tomato__Tomato_YellowLeaf__Curl_Virus': 'Tomato tomato yellowleaf curl virus',
+        'Tomato__Tomato_mosaic_virus': 'Tomato tomato mosaic virus',
+        'Tomato_healthy': 'Tomato healthy'
     }
-    
-    # Print the predicted label
-    print('source of damage is: ' + mapping[predicted_class_idx])
-    return mapping[predicted_class_idx]
 
+    # Get the predicted class label from the model's result
+    predicted_class_label = results[0]['label']
+
+    # Map the predicted class label to the human-readable label
+    predicted_label = mapping.get(predicted_class_label, "Unknown label")
+
+    # Print the predicted label
+    print('Source of damage is:', predicted_label)
+    return predicted_label
+
+
+def generate_gemini_explanation(image_path: pathlib.Path, label: str) -> str:
+    prompt_parts = [
+        genai.upload_file(image_path),
+        f"Input: The danger to the plant in this image was classified as '{label}'. Explain how this condition works and how to alleviate it.",
+        "Output (Answer with 50 words max): ",
+    ]
+    response = model.generate_content(prompt_parts)
+    return to_markdown(response)
 
 
 #API routes
@@ -96,18 +129,20 @@ async def receive_file(file: UploadFile = File(...), extension: str = Form(...))
         response = model_forward(img)
 
         print(response)
-        return {"status":response}
+        with tempfile.NamedTemporaryFile(delete=False, suffix=f".{file_extension}") as temp_file:
+            contents = await file.read()
+            temp_file.write(contents)
+            temp_file_path = pathlib.Path(temp_file.name)
+
+        out = generate_gemini_explanation(temp_file_path, response)
+        temp_file_path.unlink()
+
+        return {"status":response, "explanation": out}
     
     except Exception as e:
         return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"message": str(e)})
 
 
-@app.get("/generate/{prompt}")
-def generateSolution(prompt: str):
-    response =""
-
-
-    return {"response":prompt}
 #Uvicorn routing setup
 if __name__ == "__main__":
     uvicorn.run("main:app", port=5000, reload=True)
