@@ -34,6 +34,7 @@ import tempfile
 import pathlib
 import base64
 import json
+from collections import Counter
 
 #FASTAPI imports
 import uvicorn
@@ -185,26 +186,27 @@ async def receive_file(file: UploadFile = File(...), extension: str = Form(...),
 async def getOccurences(username: str):
     cursor.execute("SELECT result, description FROM submissions WHERE username=?", (username,))
     results = cursor.fetchall()
-    results = [r[0] for r in results]
+    # [(potato, ...), (tomato, ...), ...]
 
-    counter = [(r, results.count(r)) for r in results]
-    counter.sort(key=lambda tup: tup[1])
-    top5 = [c for _, c in counter[:min(5, len(counter))]]
-    
+    results = [r[0] for r in results]
+    counter = Counter(results)
+
+    mc = counter.most_common(min(len(counter), 5))
+    top5 = [c for r, c in mc]
+
     return {"array": top5}   
 
 @app.get("/categories/{username}")
 async def getCategories(username: str):
     cursor.execute("SELECT result, description FROM submissions WHERE username=?", (username,))
     results = cursor.fetchall()
-    results = [r[0] for r in results]
-    print("RESULTS: ", results)
-
-    counter = [(r, results.count(r)) for r in results]
-    counter.sort(key=lambda tup: tup[1])
-    top5 = [r for r, _ in counter[:min(len(counter),5)]]
     # [(potato, ...), (tomato, ...), ...]
-    print("TOP5: ",top5)
+
+    results = [r[0] for r in results]
+    counter = Counter(results)
+
+    mc = counter.most_common(min(len(counter), 5))
+    top5 = [r for r, c in mc]
     return {"array": top5}  
 
 
