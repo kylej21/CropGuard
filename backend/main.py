@@ -214,7 +214,7 @@ async def user_submissions(username: str = Form(...)):
     cursor.execute(query, (username,))
 
     results = cursor.fetchall()
-    print([r[0] for r in results])
+    print(results[0][0])
     return {"submissions": results}
 
 

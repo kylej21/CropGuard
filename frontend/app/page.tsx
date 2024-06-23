@@ -67,13 +67,13 @@ export default function Home() {
                 </div>
                 <b> About Faulty Farming</b>
                 <div className="flex items-center justify-center text-center text-2xl">
-                    <p className="w-2/3">Faulty Farming is a project that utilizes cutting edge computer vision technology to empower farmers. By classifying crops, we enable farmers to focus on sustainable agriculture practices. </p>
+                    <p className="w-2/3">Faulty Farming is a project that utilizes cutting edge computer vision technology to empower farmers. By identifying unhealthy crops, we enable farmers to focus on sustainable agriculture practices. </p>
                 </div>
                 <div>
                     <b> Tech</b>
                 </div>
                 <div className="flex items-center justify-center text-center text-2xl">
-                    <p className="w-2/3">We utilized Next.js, Tailwind CSS, and TypeScript for our frontend, incorporating various UI frameworks. Our Python backend hosts an ML model built with PyTorch and stores data on AWS.</p>
+                    <p className="w-2/3">We utilized Next.js, Tailwind CSS, and TypeScript for our frontend, incorporating various UI frameworks. Our Python backend hosts an ML model built with PyTorch and stores data with SQLite.</p>
                 </div>
             </div>
         </div>
