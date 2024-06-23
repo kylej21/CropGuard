@@ -1,5 +1,5 @@
 ## Description
-This full-stack web application enables users to upload images of sick plants to diagnose their illnesses. When logged in, it includes a dashboard with analytics
+This full-stack web application enables users to upload images of diseased plants to diagnose their illnesses. When logged in, it includes a dashboard with analytics
 and submission history to provide actionable insights. We used PyTorch to build a Machine Learning classification model on the backend. Was built with the intent to further innovation in the realm of agricultural sustainability. 
 
 ## Getting Started
