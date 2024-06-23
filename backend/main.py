@@ -8,6 +8,26 @@
 #   - python3 -m venv . [creates venv in local directory]
 #   - pip3 install -r requirements.txt
 
+# =============================================
+
+# SQL DATABASE INFO
+# -----------------
+# 
+# CREATE TABLE users (
+#     id INT AUTO_INCREMENT PRIMARY KEY,
+#     username VARCHAR(255) UNIQUE NOT NULL,
+#     password VARCHAR(255) NOT NULL
+# );
+# 
+# CREATE TABLE submissions (
+#     id INT AUTO_INCREMENT PRIMARY KEY,
+#     username VARCHAR(255) NOT NULL,
+#     image LONGBLOB,
+#     description TEXT,
+#     FOREIGN KEY (username) REFERENCES users(username)
+# );
+
+
 #operational imports
 import os
 import tempfile
@@ -31,6 +51,14 @@ import google.generativeai as genai
 from IPython.display import display, Markdown
 import textwrap
 
+# db imports
+import sqlite3
+
+# connect db
+conn = sqlite3.connect('mydatabase.db')
+cursor = conn.cursor() #The cursor allows you to execute SQL commands against the database:
+
+
 # set up model
 genai.configure(api_key="AIzaSyAZGdzC8i8YOMojZMCGXLkQirVp6X4bYDs")
 model = genai.GenerativeModel('gemini-1.5-flash')
@@ -39,7 +67,7 @@ model = genai.GenerativeModel('gemini-1.5-flash')
 # imputs must be converted to markdown when returned
 def to_markdown(text):
   text = text.replace('•', '  *')
-  return textwrap.indent(text, '> ', predicate=lambda _: True)
+  return textwrap.indent(text, '', predicate=lambda _: True)
 
 # text input -> text output using Gemini API
 def generateValue(input):
@@ -60,7 +88,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-pipe = pipeline("gianlab/swin-tiny-patch4-window7-224-finetuned-plantdisease")
+pipe = pipeline("image-classification", model="gianlab/swin-tiny-patch4-window7-224-finetuned-plantdisease")
 
 def model_forward(image: Image) -> str:
 
@@ -104,7 +132,7 @@ def generate_gemini_explanation(image_path: pathlib.Path, label: str) -> str:
         "Output (Answer with 50 words max): ",
     ]
     response = model.generate_content(prompt_parts)
-    return to_markdown(response)
+    return to_markdown(response.text)
 
 
 #API routes
@@ -115,7 +143,7 @@ def read_root():
 
 # post request - image sent to backend
 @app.post("/upload")
-async def receive_file(file: UploadFile = File(...), extension: str = Form(...)):
+async def receive_file(file: UploadFile = File(...), extension: str = Form(...), username: str = Form(...)):
     print("recieved")
     try:
         # ensure file is an image
@@ -135,12 +163,51 @@ async def receive_file(file: UploadFile = File(...), extension: str = Form(...))
             temp_file_path = pathlib.Path(temp_file.name)
 
         out = generate_gemini_explanation(temp_file_path, response)
+        print(out)
         temp_file_path.unlink()
 
+        # save image to SQL DB
+        bytes_data = io.BytesIO(request_object_content)
+        params = (username, bytes_data, out)
+        query = "INSERT INTO submissions (username, image, description) VALUES (?, ?, ?)"
+
         return {"status":response, "explanation": out}
-    
+
     except Exception as e:
         return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"message": str(e)})
+
+
+
+@app.post("/login")
+async def login(username:str = Form(...), password:str = Form(...)):
+    print("here")
+    print(username)
+    print(password)
+
+    cursor.execute('SELECT * FROM users WHERE username=? AND password=?', (username,password))
+    user = cursor.fetchone()
+    print(user)
+    if user:        
+        print(f"Logged in as: {username}")
+        return {"user":user}
+    else:
+        cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+        conn.commit()
+        print("Account created")
+        return {"created":username}
+    
+    
+    
+@app.post("/submissions")
+async def user_submissions(username: str = Form(...)):
+    query = "SELECT image, description FROM submissions WHERE username=?"
+    cursor.execute(query, (username))
+
+    results = cursor.fetchall()
+    print(results)
+
+    return {"submissions": results}
+
 
 
 #Uvicorn routing setup
