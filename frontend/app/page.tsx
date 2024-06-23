@@ -51,7 +51,7 @@ export default function Home() {
                     </div>
                     <div className="h-3/4 flex text-white items-center justify-center text-center align-middle">
                         {/* Content */}
-                        <Popout username={username}/>
+                        {isLoggedIn && (<Popout username={username}/>)}
                     </div>
                 </div>
             </div>
@@ -65,15 +65,17 @@ export default function Home() {
                         )}
                     </div>
                 </div>
-                <b> About Faulty Farming</b>
+                <b> About Crop Guard</b>
                 <div className="flex items-center justify-center text-center text-2xl">
-                    <p className="w-2/3">Faulty Farming is a project that utilizes cutting edge computer vision technology to empower farmers. By identifying unhealthy crops, we enable farmers to focus on sustainable agriculture practices. </p>
-                </div>
-                <div>
-                    <b> Tech</b>
+                    <p className="w-2/3">Crop Guard is a project that utilizes <b>cutting edge computer vision </b>
+                     technology to identify unhealthy crops, enabling farmers to focus 
+                    on <b>sustainable</b> agriculture practices. As a <u>220 billion dollar</u> industry, sustainable agriculture 
+                    is in clear need of innovation.<br></br><br></br>Our goal is to provide <b>actionable, data-centric feedback </b>
+                    that enables farmers to minimize pesticide use and empowers them to focus on sustainable agriculture principles.</p>
+                    
                 </div>
                 <div className="flex items-center justify-center text-center text-2xl">
-                    <p className="w-2/3">We utilized Next.js, Tailwind CSS, and TypeScript for our frontend, incorporating various UI frameworks. Our Python backend hosts an ML model built with PyTorch and stores data with SQLite.</p>
+                    <p className="w-2/3">We utilized Next.js, Tailwind CSS, and TypeScript for our frontend, incorporating various UI frameworks. Our FastAPI backend hosts a PyTorch ML model and stores data with SQLite.</p>
                 </div>
             </div>
         </div>
