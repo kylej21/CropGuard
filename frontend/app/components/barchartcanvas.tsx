@@ -7,7 +7,7 @@ interface BarChartProps {
 const ExamplePage: React.FC<BarChartProps> = ({ username }) => {
   return (
     <div>
-      <h1>Bar Chart Example</h1>
+      <h1>Disease Frequencies</h1>
       <BarChart username={username} />
     </div>
   );

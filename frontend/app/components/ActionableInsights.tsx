@@ -23,10 +23,10 @@ const ActionableInsights: React.FC<BarChartProps> = ({ username })=> {
     return (
         <div>
         {loading && (
-            <div className="flex items-center justify-center">
-              <div className="flex-col gap-4 w-full flex items-center justify-center">
+            <div className="flex items-start justify-start">
+              <div className="flex-col gap-4 w-full flex items-center justify-start">
                 {/* tuff binary tree */}
-                <div className="w-80 h-80 border-8 text-green-400 text-4xl animate-spin border-gray-300 flex items-center justify-center border-t-green-400 rounded-full">
+                <div className="w-80 h-80 border-8 text-green-400 text-4xl animate-spin border-gray-300 flex items-start justify-center border-t-green-400 rounded-full">
                   <TbBinaryTree className="w-40 h-40" />
                 </div>
               </div>
