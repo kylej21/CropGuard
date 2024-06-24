@@ -30,3 +30,11 @@ video: https://youtu.be/x2lnc4zBGOo
 <img width="1470" alt="Screenshot 2024-06-23 at 10 11 24 AM" src="https://github.com/kylej21/CropGuard/assets/111208810/55c0b262-8148-470e-80e4-fe45d89fb2eb">
 
 <img width="1470" alt="Screenshot 2024-06-23 at 10 13 09 AM" src="https://github.com/kylej21/CropGuard/assets/111208810/c3c32b67-b527-4ff6-9c62-36edde7462d3">
+
+## To Do
+1. Improve model + expand to other plant types
+2. Incorporate DB storage + retrieval of images
+3. Live cam of model
+4. Responsive UI for mobile + browser types
+5. Deploy backend
+6. Admin analytics
