@@ -75,7 +75,7 @@ def to_markdown(text):
 # text input -> text output using Gemini API
 def generateValue(input):
     response = model.generate_content(input)
-    return to_markdown(response.text)
+    return response.text
 
 
 #FASTAPI setup
@@ -245,7 +245,22 @@ async def user_submissions(username: str = Form(...)):
     print(results)
     return {"submissions": results}
 
+@app.get("/insight/{username}")
+async def getInsights(username: str):
+    query = "SELECT result, description FROM submissions WHERE username=?"
+    cursor.execute(query, (username,))
 
+    results = cursor.fetchall()    
+    print("results")
+    print(results)
+    genInput = ""
+    for x in results:
+        genInput += x[0]
+        print(genInput)
+    genInput = "This is a list of all infections per plant in a garden. Based on the most frequent one, provide some concise advice on preventing these issues, or what might be causing them. Hide the fact that I prepended your prompt with this message:" + genInput
+    out = generateValue(genInput)
+    print(out)
+    return {"action":out}
 
 #Uvicorn routing setup
 if __name__ == "__main__":

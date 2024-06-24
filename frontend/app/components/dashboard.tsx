@@ -5,6 +5,7 @@ import SubmissionResult from "./submission_result";
 import title from "../public/newTitle.png";
 import ImageList from "./ImageList";
 import IndexPage from "./barchartcanvas";
+import ActionableInsights from "./ActionableInsights";
 interface DashProps {
   username: string;
 }
@@ -76,6 +77,9 @@ function Dash({ username }: DashProps) {
               </div>
               <div className="w-1/2 text-center text-5xl">
                 <IndexPage username={username} />
+                <div className="pt-4">
+                    <ActionableInsights username ={username}/>
+                </div>
               </div>
             </div>
           </div>
