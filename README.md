@@ -36,5 +36,5 @@ video: https://youtu.be/x2lnc4zBGOo
 2. Incorporate DB storage + retrieval of images
 3. Live cam of model
 4. Responsive UI for mobile + browser types
-5. Deploy backend
+5. Fix HTTPS proxy security with Vercel - maybe nginx
 6. Admin analytics
