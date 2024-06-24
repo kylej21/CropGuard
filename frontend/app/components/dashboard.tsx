@@ -31,7 +31,7 @@ function Dash({ username }: DashProps) {
       body: formData,
     };
 
-    let data = await fetch("http://127.0.0.1:5000/submissions", requestOptions)
+    let data = await fetch("http://18.216.31.43:8000/submissions", requestOptions)
       .then((res) => res.json())
       .then((data) => {
         console.log("data: " + data);
