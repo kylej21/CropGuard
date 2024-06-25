@@ -60,7 +60,6 @@ const Login: React.FC<LoginProps> = ({ isLoggedIn, onLogin, onLogout }) => {
       method: "POST",
       body: formData,
     };
-
     fetch("http://18.216.31.43:8000/login/", requestOptions)
       .then((res) => res.json())
       .then((data) => {
@@ -79,12 +78,12 @@ const Login: React.FC<LoginProps> = ({ isLoggedIn, onLogin, onLogout }) => {
   };
 
   return (
-    <div className="w-screen flex items-right justify-right">
-      <div className="ml-auto w-1/4 p-4">
+    <div className="w-screen flex items-right justify-center lg:justify-end">
+      <div className="ml-auto w-5/12 lg:w-1/4 p-4">
         {" "}
         {/* Added div with ml-auto class for right alignment */}
         <button
-          className="border-black bg-emerald-700 border-2 justify-right text-center w-full p-4 rounded-lg hover:bg-emerald-800 text-4xl text-white"
+          className="border-black bg-emerald-700 border-2 justify-right text-center w-full p-4 rounded-lg hover:bg-emerald-800 text-xl lg:text-4xl text-white"
           onClick={logInOrOut}
         >
           <b>{loggedUser}</b>

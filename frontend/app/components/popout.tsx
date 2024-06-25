@@ -64,7 +64,7 @@ function Popout({ username }: DashProps) {
   return (
     <div className="w-screen flex justify-center items-center h-screen">
       <button
-        className="w-2/5 relative border-4 hover:border-green-600 duration-500 group cursor-pointer text-sky-50 overflow-hidden h-20 rounded-lg bg-green-800 p-2 flex justify-center items-center font-extrabold"
+        className="w-4/5 lg:w-2/5 relative border-4 hover:border-green-600 duration-500 group cursor-pointer text-sky-50 overflow-hidden h-20 rounded-lg bg-green-800 p-2 flex justify-center items-center font-extrabold"
         onClick={openModal}
       >
         <div className="absolute z-10 w-3/4 h-60 rounded-full group-hover:scale-150 transition-all  duration-500 ease-in-out bg-green-900 delay-150 group-hover:delay-75"></div>
@@ -79,12 +79,12 @@ function Popout({ username }: DashProps) {
       </button>
 
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 h-full flex items-center justify-center bg-black bg-opacity-75">
+        <div className="fixed inset-0 z-50 h-5/6 lg:h-full flex items-center justify-center bg-black bg-opacity-75">
           {/* Popup Window */}
-          <div className="w-2/3 h-3/4 bg-white p-4 rounded-lg shadow-lg">
+          <div className="w-full lg:w-2/3 h-3/4 bg-white p-4 rounded-lg shadow-lg">
             {/* loading screen */}
             {loading && (
-              <div className="flex items-center justify-center h-screen">
+              <div className="flex items-center justify-center h-full lg:h-screen">
                 <div className="flex-col gap-4 w-full flex items-center justify-center">
                   {/* tuff binary tree */}
                   <div className="w-80 h-80 border-8 text-green-400 text-4xl animate-spin border-gray-300 flex items-center justify-center border-t-green-400 rounded-full">
@@ -93,19 +93,22 @@ function Popout({ username }: DashProps) {
                 </div>
               </div>
             )}
+            {!loading && (
+               <h2 className="text-3xl font-bold mb-4 text-stone-700">
+               Upload Your Image
+             </h2>
+            )}
+           
 
-            <h2 className="text-3xl font-bold mb-4 text-stone-700">
-              Upload Your Image
-            </h2>
-
-            <form className="h-full">
+            <form className="h-4/5 lg:h-full">
               {/* Picture file input */}
-              <div className="w-full flex-col items-center justify-center h-3/4">
+              <div className="w-full flex-col items-center justify-center h-2/3 lg:h-3/4">
                 <div className="flex w-full items-center justify-between">
                   <div className="flex-col w-3/5">
                     {/* Upload button */}
-                    <div className=" scale-150 flex h-30 w-full items-center rounded-md border-input px-3 py-2 text-sm text-gray-400 file:border-0 file:bg-transparent file:text-gray-600 file:text-sm file:font-medium">
-                      <label className="flex bg-emerald-500 hover:bg-emerald-700 text-white text-base px-5 py-3 outline-none rounded w-max cursor-pointer mx-auto font-[sans-serif] justify-center">
+                    
+                    {!loading && (<div className=" scale-150 flex h-20 w-full items-center rounded-md border-input px-3 py-2 text-sm text-gray-400 file:border-0 file:bg-transparent file:text-gray-600 file:text-sm file:font-medium">
+                      <label className="flex bg-emerald-500 hover:bg-emerald-700 text-white text-base px-5 py-3 outline-none rounded w-3/5 lg:w-max cursor-pointer mx-auto font-[sans-serif] justify-center">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           className="w-6 mr-2 fill-white inline"
@@ -131,20 +134,25 @@ function Popout({ username }: DashProps) {
                           }}
                         />
                       </label>
-                    </div>
-                    <div className="text-black justify-start text-left text-2xl p-12">
-                      {response}
-                    </div>
-                  </div>
-                  <div className="flex w-1/3 h-80 bg-gray-200 border border-black">
-                    {image && (
-                      <img
-                        src={URL.createObjectURL(image)}
-                        alt="No Image Selected"
-                        className="max-w-full max-h-full object-fill"
-                      />
+                    </div>)}
+                    {!loading && (
+                     <div className="text-black justify-start text-left text-lg lg:text-2xl p-12">
+                     {response}
+                   </div>
                     )}
                   </div>
+                  {!loading && (
+                     <div className="flex w-1/3 h-40 lg:h-80 bg-gray-200 border border-black">
+                     {image && (
+                       <img
+                         src={URL.createObjectURL(image)}
+                         alt="No Image Selected"
+                         className="max-w-full max-h-full object-fill"
+                       />
+                     )}
+                   </div>
+                    )}
+                  
                 </div>
 
                 <div className="text-black justify-start text-left text-6xl pt-12"></div>
@@ -155,7 +163,7 @@ function Popout({ username }: DashProps) {
                 onClick={(e) => {
                   e.preventDefault(), handleSubmission();
                 }}
-                className="bg-emerald-500 text-white py-2 px-4 rounded-md hover:bg-emerald-800"
+                className="bg-emerald-500 text-white text-4xl lg:text-8xl py-2 px-4 rounded-md hover:bg-emerald-800 w-4/5 lg:w-3/5 h-20 lg:h-28"
               >
                 Analyze
               </button>

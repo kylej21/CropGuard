@@ -12,11 +12,13 @@
   "dependencies": {
     "@radix-ui/themes": "^3.1.1",
     "@types/chart.js": "^2.9.41",
+    "@vercel/node": "^3.1.7",
     "chart.js": "^4.4.3",
     "chartjs-plugin-datalabels": "^2.2.0",
     "framer-motion": "^11.2.11",
     "marked": "^13.0.1",
     "next": "14.2.4",
+    "node-fetch": "^3.3.2",
     "playwright": "^1.44.1",
     "prettier": "^3.3.2",
     "radix-ui": "^1.0.1",
