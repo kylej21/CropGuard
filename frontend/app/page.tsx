@@ -6,7 +6,7 @@ import Login from "./components/login";
 import { title_font } from "./fonts";
 import title from "./public/newTitle.png";
 import Dash from "./components/dashboard";
-
+import Link from "next/link"
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState<string>("");
@@ -69,6 +69,9 @@ export default function Home() {
             {isLoggedIn && <Dash username={username} />}
           </div>
         </div>
+        <div>
+          
+        </div>
         <b className="text-5xl lg:text-6xl"> About Crop Guard</b>
         <div className="flex items-center justify-center text-center text-2xl bg-stone-800 ">
           <p className="w-11/12 lg:w-2/3">
@@ -90,6 +93,18 @@ export default function Home() {
             incorporating various UI frameworks. Our FastAPI backend hosts a
             PyTorch ML model and stores data with SQLite.
           </p>
+        </div>
+        <div className="bg-stone-800 text-center">
+          <p className="text-2xl lg:text-3xl text-white w-11/12 lg:w-2/3 mx-auto mb-8">
+            Don't want to upload images? Go live using your webcam below!
+          </p>
+          <div className="flex justify-center">
+            <Link href="/live">
+              <div className="bg-red-500 text-white py-4 px-8 lg:py-6 lg:px-12 rounded-lg border border-white hover:bg-red-600 transition duration-300 ease-in-out">
+                Go Live!
+              </div>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
