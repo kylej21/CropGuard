@@ -1,7 +1,7 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react';
 import * as tmImage from '@teachablemachine/image';
-import ProgressBar from '../components/progressBar';
+import ProgressBar from '../components/ProgressBar';
 export default function Nikan() {
     
     // put kids unique model link HERE 
