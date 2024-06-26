@@ -6,7 +6,7 @@ import Login from "./components/login";
 import { title_font } from "./fonts";
 import title from "./public/newTitle.png";
 import Dash from "./components/dashboard";
-import Link from "next/link"
+import Link from "next/link";
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState<string>("");
@@ -32,7 +32,10 @@ export default function Home() {
               </div>
               <div className="flex items-start justify-end p-2 w-1/2">
                 <div className="text-6xl text-black">
-                  <div id="login" className="text-gray-500 hover:text-gray-700 smLt">
+                  <div
+                    id="login"
+                    className="text-gray-500 hover:text-gray-700 smLt"
+                  >
                     <Login
                       isLoggedIn={isLoggedIn}
                       onLogin={handleLogin}
@@ -69,9 +72,7 @@ export default function Home() {
             {isLoggedIn && <Dash username={username} />}
           </div>
         </div>
-        <div>
-          
-        </div>
+        <div></div>
         <b className="text-5xl lg:text-6xl"> About Crop Guard</b>
         <div className="flex items-center justify-center text-center text-2xl bg-stone-800 ">
           <p className="w-11/12 lg:w-2/3">

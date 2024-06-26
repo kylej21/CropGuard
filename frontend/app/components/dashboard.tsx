@@ -32,7 +32,10 @@ function Dash({ username }: DashProps) {
       body: formData,
     };
 
-    let data = await fetch("http://18.216.31.43:8000/submissions", requestOptions)
+    let data = await fetch(
+      "http://18.216.31.43:8000/submissions",
+      requestOptions,
+    )
       .then((res) => res.json())
       .then((data) => {
         console.log("data: " + data);
@@ -78,7 +81,7 @@ function Dash({ username }: DashProps) {
               <div className="w-1/2 text-center text-5xl">
                 <IndexPage username={username} />
                 <div className="pt-4">
-                    <ActionableInsights username ={username}/>
+                  <ActionableInsights username={username} />
                 </div>
               </div>
             </div>
