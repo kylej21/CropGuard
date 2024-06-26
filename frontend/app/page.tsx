@@ -63,7 +63,7 @@ export default function Home() {
       </div>
 
       {/* About Faulty Farming Section */}
-      <div className="flex-col bg-stone-800 h-auto items-center justify-center text-center text-6xl p-10 lg:p-20 space-y-20 w-screen">
+      <div className="flex-col bg-stone-800 h-auto items-center justify-center text-center text-6xl p-10 lg:p-20 space-y-20 w-screen text-white">
         <div className="flex justify-center w-full items-center">
           <div className=" w-full lg:w-1/2 pb-12">
             {isLoggedIn && <Dash username={username} />}
