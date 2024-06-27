@@ -2,10 +2,7 @@
     "rewrites": [
       {
         "source": "https://18.216.31.43:8000/login/",
-        "destination": "http://18.216.31.43:8000/login/",
-        "headers": {
-          "host": "your-backend-server"
-        }
+        "destination": "http://18.216.31.43:8000/login/"
       }
     ]
   }
