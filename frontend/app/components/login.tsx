@@ -60,7 +60,7 @@ const Login: React.FC<LoginProps> = ({ isLoggedIn, onLogin, onLogout }) => {
       method: "POST",
       body: formData,
     };
-    fetch("https://18.216.31.43:8000/login/", requestOptions)
+    fetch("http://18.216.31.43:8000/login/", requestOptions)
       .then((res) => res.json())
       .then((data) => {
         if (data["status"] === "logged in") {

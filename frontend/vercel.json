@@ -1,9 +1,0 @@
-{
-    "rewrites": [
-      {
-        "source": "https://18.216.31.43:8000/login/",
-        "destination": "http://18.216.31.43:8000/login/"
-      }
-    ]
-  }
-  
