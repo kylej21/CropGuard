@@ -35,10 +35,12 @@ import pathlib
 import base64
 import json
 from collections import Counter
+from dotenv import load_dotenv
+load_dotenv()
 
 #FASTAPI imports
 import uvicorn
-from fastapi import FastAPI, status, UploadFile, File, Form
+from fastapi import FastAPI, status, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
@@ -57,13 +59,18 @@ import textwrap
 # db imports
 import sqlite3
 
+# email imports
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 # connect db
 conn = sqlite3.connect('mydatabase.db')
 cursor = conn.cursor() #The cursor allows you to execute SQL commands against the database:
 
 
 # set up model
-genai.configure(api_key="AIzaSyAZGdzC8i8YOMojZMCGXLkQirVp6X4bYDs")
+genai.configure(api_key=os.getenv("API_KEY"))
 model = genai.GenerativeModel('gemini-1.5-flash')
 
 # REQUIRED FOR GEMINI API
@@ -76,7 +83,6 @@ def to_markdown(text):
 def generateValue(input):
     response = model.generate_content(input)
     return response.text
-
 
 #FASTAPI setup
 app = FastAPI()
@@ -208,8 +214,6 @@ async def getCategories(username: str):
     mc = counter.most_common(min(len(counter), 5))
     top5 = [r for r, c in mc]
     return {"array": top5}  
-
-
 
 @app.post("/login")
 async def login(username:str = Form(...), password:str = Form(...)):
