@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as tmImage from "@teachablemachine/image";
 import ProgressBar from "../components/ProgressBar";
+import Link from "next/link";
 export default function Nikan() {
   // put kids unique model link HERE
   const URL = "https://teachablemachine.withgoogle.com/models/SlUGQacyh/";
@@ -75,14 +76,19 @@ export default function Nikan() {
   }, []); // Empty dependency array ensures effect runs only on mount
 
   return (
-    <main className="flex-col w-full min-h-screen items-center bg-green-600 text-white text-7xl">
-      <p className="text-center">Design still under construction</p>
+    <main className="flex-col w-full min-h-screen items-center bg-[url('./public/grassback.jpg')] bg-cover bg-no-repeat bg-center text-white text-7xl">
+      <p className="text-center text-stone-600">Webcam classification</p>
       <div
         id="webcam-container"
         className="pt-4 w-full flex justify-center border-stone-700 border-3 rounded-xl pb-8 "
       ></div>
       <div className="flex space-y-4 justify-center items-center w-full">
         <ProgressBar progressData={progressData} />
+      </div>
+      <div className = "flex justify-center items-center"> 
+      <Link href="/" className = "flex justify-center items-center bg-stone-700 text-white w-1/4 rounded-xl p-2 border-white border-2">
+        Go back
+      </Link>
       </div>
     </main>
   );
