@@ -82,13 +82,21 @@ function Popout({ username }: DashProps) {
           <div className="w-full lg:w-2/3 h-4/5 bg-white p-4 rounded-lg shadow-lg overflow-hidden">
             {/* Loading screen */}
             {loading && (
-              <div className="flex items-center justify-center h-full lg:h-screen">
-                <div className="flex-col gap-4 w-full flex items-center justify-center">
+              <div className="flex items-center justify-center h-full lg:h-full">
+                <div className="flex-col gap-4 w-full flex items-center justify-around">
                   {/* tuff binary tree */}
+
+                  <div className="text-green-400 text-4xl">
+                    <b className="text-black">Loading...</b>
+                    <br></br>
+                    <br></br>
+                    <b>Fun fact: Binary trees are used in both linguistics and computer science </b>
+                  </div>
                   <div className="w-80 h-80 border-8 text-green-400 text-4xl animate-spin border-gray-300 flex items-center justify-center border-t-green-400 rounded-full">
                     <TbBinaryTree className="w-40 h-40" />
                   </div>
-                </div>              </div>
+                </div>             
+              </div>
             )}
             {!loading && (
               <h2 className="text-3xl font-bold mb-4 text-stone-700">
@@ -153,7 +161,7 @@ function Popout({ username }: DashProps) {
               <button
                 type="button"
                 onClick={handleSubmission}
-                className=" bg-emerald-500 text-white text-4xl font-bold lg:text-5xl py-4 px-6 rounded-md hover:bg-emerald-800 w-full lg:w-3/5 h-20 lg:h-auto max-h-20 self-center"
+                className="mb-8 bg-emerald-500 text-white text-4xl font-bold lg:text-5xl py-4 px-6 rounded-md hover:bg-emerald-800 w-full lg:w-3/5 h-20 lg:h-auto max-h-20 self-center"
               >
                 Analyze
               </button>
