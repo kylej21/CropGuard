@@ -16,12 +16,12 @@ const BarChart: React.FC<BarChartProps> = ({ username }) => {
     const fetchData = async () => {
       // Replace with your data fetching logic
       let categories = await fetch(
-        "http://18.216.31.43:8000/categories/" + username,
+        "http://127.0.0.1:5000/categories/" + username,
       )
         .then((res) => res.json())
         .then((res) => res["array"]);
       let occurences = await fetch(
-        "http://18.216.31.43:8000/occurences/" + username,
+        "http://127.0.0.1:5000/occurences/" + username,
       )
         .then((res) => res.json())
         .then((res) => res["array"]); // Example data: number of occurrences

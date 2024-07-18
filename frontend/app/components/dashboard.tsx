@@ -33,7 +33,7 @@ function Dash({ username }: DashProps) {
     };
 
     let data = await fetch(
-      "http://18.216.31.43:8000/submissions",
+      "http://127.0.0.1:5000/submissions",
       requestOptions,
     )
       .then((res) => res.json())

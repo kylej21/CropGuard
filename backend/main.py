@@ -215,12 +215,20 @@ async def getCategories(username: str):
     top5 = [r for r, c in mc]
     return {"array": top5}  
 
+@app.post("/create")
+async def login(username:str = Form(...), password:str = Form(...)):
+    print('creating')
+    cursor.execute('SELECT * FROM users WHERE username=?', (username,))
+    user = cursor.fetchone()
+    if user:
+        return {"status":"Username Taken"}
+    else:
+        cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+        conn.commit()
+        print("Account created")
+        return {"status":"Account created"}
 @app.post("/login")
 async def login(username:str = Form(...), password:str = Form(...)):
-    print("here")
-    print(username)
-    print(password)
-
     cursor.execute('SELECT * FROM users WHERE username=? AND password=?', (username,password))
     user = cursor.fetchone()
     print(user)
@@ -233,10 +241,10 @@ async def login(username:str = Form(...), password:str = Form(...)):
         if user:
             return {"status":"Incorrect Password"}
         else:
-            cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
-            conn.commit()
-            print("Account created")
-            return {"status":"Account created"}
+            #cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+            #conn.commit()
+            #print("Account created")
+            return {"status":"Account not found"}
     
     
     

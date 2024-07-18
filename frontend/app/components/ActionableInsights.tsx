@@ -13,7 +13,7 @@ const ActionableInsights: React.FC<BarChartProps> = ({ username }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      let insight = await fetch("http://18.216.31.43:8000/insight/" + username)
+      let insight = await fetch("http://127.0.0.1:5000/insight/" + username)
         .then((res) => res.json())
         .then((res) => res["action"]);
       setAction(insight);

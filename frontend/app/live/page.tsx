@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 import * as tmImage from "@teachablemachine/image";
 import ProgressBar from "../components/ProgressBar";
 import Link from "next/link";
-export default function Nikan() {
+export default function Live() {
   // put kids unique model link HERE
   const URL = "https://teachablemachine.withgoogle.com/models/SlUGQacyh/";
 

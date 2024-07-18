@@ -45,7 +45,7 @@ function Popout({ username }: DashProps) {
       method: "POST",
       body: formData,
     };
-    await fetch("http://18.216.31.43:8000/upload/", requestOptions)
+    await fetch("http://127.0.0.1:5000/upload/", requestOptions)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);

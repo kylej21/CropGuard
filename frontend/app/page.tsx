@@ -7,6 +7,7 @@ import { title_font } from "./fonts";
 import title from "./public/newTitle.png";
 import Dash from "./components/dashboard";
 import Link from "next/link";
+import { SnackbarProvider } from "notistack";
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState<string>("");
@@ -22,6 +23,7 @@ export default function Home() {
   };
 
   return (
+    <SnackbarProvider>
     <div>
       <div className="z-10 w-screen h-screen items-center justify-around font-mono text-sm lg:flex-col bg-[url('./public/grassback.jpg')] bg-cover bg-no-repeat bg-center">
         <div className="h-3/4 text-8xl text-black w-full text-center flex-col">
@@ -109,5 +111,6 @@ export default function Home() {
         </div>
       </div>
     </div>
+    </SnackbarProvider>
   );
 }
