@@ -60,8 +60,8 @@ export default function Learning({ params }: { params: { user: string } }): JSX.
           {user.id} - {user.username} - {user.password}
         </div>
       ))}
-      <input onChange={(e)=>setUserInput(e.target.value)}></input>
-      <input onChange={(e)=>setPassInput(e.target.value)}></input>
+      <input placeholder='username' onChange={(e)=>setUserInput(e.target.value)}></input>
+      <input placeholder='password' onChange={(e)=>setPassInput(e.target.value)}></input>
       <button onClick={addUser}>Add user</button>
     </main>
   );
