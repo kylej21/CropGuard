@@ -6,6 +6,7 @@ import title from "../public/newTitle.png";
 import ImageList from "./ImageList";
 import IndexPage from "./barchartcanvas";
 import ActionableInsights from "./ActionableInsights";
+import { enqueueSnackbar } from "notistack";
 interface DashProps {
   username: string;
 }
@@ -24,31 +25,32 @@ function Dash({ username }: DashProps) {
   };
 
   // Gets submissions JSON information of user's data
-  async function getData() {
-    const formData = new FormData();
-    formData.append("username", username);
-
+  const getData = ()=> {
     const requestOptions = {
       method: "POST",
-      body: formData,
+      body: JSON.stringify({ username: username}),
     };
 
-    let data = await fetch(
-      "http://127.0.0.1:5000/submissions",
+    let data = fetch(
+      "/api/submissions",
       requestOptions,
     )
-      .then((res) => res.json())
       .then((data) => {
-        console.log("data: " + data);
-        return data;
-      })
-      .then((data) => {
-        return data["submissions"]!;
+        const body = data.json().then((body)=>{
+          if(data.status==200){
+            console.log(body.data)
+            enqueueSnackbar('Data Loaded!', { variant: 'success', autoHideDuration: 2000 });
+            setImages(body.data);
+            setNumSubmissions(body.data.length)
+            return data;
+          }
+          else{
+            enqueueSnackbar('Error Loading Data!', { variant: 'error', autoHideDuration: 2000 });
+
+          }
+        })
+        
       });
-    console.log(data);
-    setImages(data);
-    setNumSubmissions(data.length)
-    return data;
   }
 
   return (

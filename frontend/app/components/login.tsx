@@ -4,6 +4,7 @@ import CloseButton from "./close_button";
 import { useSnackbar } from 'notistack';
 import { CiCircleInfo } from "react-icons/ci";
 import Tooltip from "./Tooltip";
+import { request } from "http";
 interface LoginProps {
   isLoggedIn: boolean;
   onLogin: (username: string) => void;
@@ -20,7 +21,6 @@ const Login: React.FC<LoginProps> = ({ isLoggedIn, onLogin, onLogout }) => {
   );
   const [loggingIn, setLoggingIn] = useState(true);
   const snackbar = useSnackbar();
-  const passReqtext = "Password must be at least 6 characters long" + '\n' + "Password cannot be empty";
 
   const changeLoggingStatus = () => {
     setLoggingIn(!loggingIn);
@@ -87,20 +87,15 @@ const Login: React.FC<LoginProps> = ({ isLoggedIn, onLogin, onLogout }) => {
   const submitForm = () => {
     if (!usernameIsValid()) return;
     if (!passwordIsValid()) return;
-    // prepare POST request
-    const formData = new FormData();
-    formData.append("username", username);
-    formData.append("password", password);
-
     const requestOptions = {
       method: "POST",
-      body: formData,
+      body: JSON.stringify({ username: username, password: password })
     };
     if(loggingIn){
-      fetch("http://127.0.0.1:5000/login/", requestOptions)
-      .then((res) => res.json())
+      fetch("/api/users", requestOptions)
       .then((data) => {
-        if (data["status"] === "logged in") {
+        console.log("frontend data", data)
+        if (data.status==200) {
           snackbar.enqueueSnackbar('Login Successful!', { variant: 'success', autoHideDuration: 2000 });
           setLoggedUser("Logout");
           onLogin(username); // Update isLoggedIn state in parent component
