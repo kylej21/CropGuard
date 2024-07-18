@@ -8,6 +8,11 @@ import title from "./public/newTitle.png";
 import Dash from "./components/dashboard";
 import Link from "next/link";
 import { SnackbarProvider } from "notistack";
+
+//experimental
+
+
+
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState<string>("");
