@@ -1,8 +1,10 @@
 // app/api/users.ts
 import { NextRequest, NextResponse } from "next/server";
 import { sql } from '@vercel/postgres';
-
+import { unstable_noStore as noStore } from 'next/cache';
 export async function POST(request: NextRequest){
+    noStore();
+
     const body = await request.json();
     const client = await sql.connect();
     console.log('add request: '+ body.username)
