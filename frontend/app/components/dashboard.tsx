@@ -14,6 +14,7 @@ function Dash({ username }: DashProps) {
   const [isCanvasOpen, setIsCanvasOpen] = useState(false);
   const [images, setImages] = useState<[string, string][]>([]);
   const [chartData, setChartData] = useState<any>(null); // Adjust type as per your data structure
+  const [numSubmissions, setNumSubmissions] = useState<number>(0);
   const openModal = () => {
     setIsCanvasOpen(true);
   };
@@ -46,7 +47,7 @@ function Dash({ username }: DashProps) {
       });
     console.log(data);
     setImages(data);
-
+    setNumSubmissions(data.length)
     return data;
   }
 
@@ -69,16 +70,24 @@ function Dash({ username }: DashProps) {
       {isCanvasOpen && (
         <div className="fixed inset-0 z-50 h-full flex items-center justify-center bg-black bg-opacity-75">
           {/* Popup Window */}
-          <div className="flex-col w-2/3 h-3/4 bg-white p-4 rounded-lg shadow-lg text-black overflow-y-scroll space-y-4">
-            <div className="flex text-center w-full items-center justify-center">
+          <div className="flex-col w-4/5 h-5/6 p-4 rounded-lg shadow-lg text-black overflow-y-scroll space-y-4 bg-emerald-200">
+            <div className="flex text-start w-full items-center justify-start text-black font-semibold text-4xl pl-4">
+              <div className="h-full w-5/12 p-2 rounded-xl bg-white border-black border-2 text-center">
               {username}
+              </div>
+              <div className="w-full text-center text-6xl">
+                  Dashboard
+              </div>
+              <div className="w-5/12 p-2 rounded-xl bg-white border-black border-2 text-center h-full">
+                Uploads: {numSubmissions} 
+              </div>
             </div>
             {/* TODO: populate results components */}
-            <div className="flex ">
-              <div className="flex-col w-1/2 items-center ">
+            <div className="flex h-5/6 border-2 border-black rounded-xl p-4 bg-white">
+              <div className="flex-col w-1/2 items-center h-full">
                 <ImageList images={images} />
               </div>
-              <div className="w-1/2 text-center text-5xl">
+              <div className="w-1/2 text-center text-5xl h-full overflow-auto">
                 <IndexPage username={username} />
                 <div className="pt-4">
                   <ActionableInsights username={username} />

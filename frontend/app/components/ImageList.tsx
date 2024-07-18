@@ -8,9 +8,9 @@ interface ImageListProps {
 
 const ImageList: React.FC<ImageListProps> = ({ images }) => {
   return (
-    <div className="flex flex-col p-4 h-full space-y-4">
+    <div className="flex flex-col p-4 h-full space-y-4 overflow-y-scroll max-h-full">
       {images.map(([tag, desc], index) => (
-        <div key={index} className="mb-4 overflow-y-auto">
+        <div key={index} className="mb-4 ">
           <div className="justify-start text-left">
             <div className="pb-4 text-3xl">Result: {tag}</div>
           </div>
