@@ -119,6 +119,7 @@ const Login: React.FC<LoginProps> = ({ isLoggedIn, onLogin, onLogout }) => {
           closeModal();
           setLoggingIn(true);
           setLoggedUser("Logout");
+          onLogin(username); // Update isLoggedIn state in parent component
 
         } 
         else {
