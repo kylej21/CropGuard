@@ -68,7 +68,7 @@ export default function Home() {
       </div>
 
       {/* About Faulty Farming Section */}
-      <div className="flex-col bg-stone-800 h-auto items-center justify-center text-center text-6xl p-10 lg:p-20 space-y-20 w-screen text-white">
+      <div className="flex-col bg-gradient-to-b from-emerald-900 from-0% via-50% to-100% via-gray-800 to-emerald-900 h-auto items-center justify-center text-center text-6xl p-10 lg:p-20 space-y-20 w-screen text-white">
         <div className="flex justify-center w-full items-center">
           <div className=" w-full lg:w-1/2 pb-12">
             {isLoggedIn && <Dash username={username} />}
@@ -76,7 +76,7 @@ export default function Home() {
         </div>
         <div></div>
         <b className="text-5xl lg:text-6xl"> About Crop Guard</b>
-        <div className="flex items-center justify-center text-center text-2xl bg-stone-800 ">
+        <div className="flex items-center justify-center text-center text-2xl ">
           <p className="w-11/12 lg:w-2/3">
             Crop Guard is a project that utilizes{" "}
             <b>cutting edge computer vision </b>
@@ -90,14 +90,14 @@ export default function Home() {
             focus on sustainable agriculture principles.
           </p>
         </div>
-        <div className="flex items-center justify-center text-center text-2xl bg-stone-800 ">
+        <div className="flex items-center justify-center text-center text-2xl  ">
           <p className="w-11/12 lg:w-2/3">
             We utilized Next.js, Tailwind CSS, and TypeScript for our frontend,
             incorporating various UI frameworks. Our FastAPI backend hosts a
             PyTorch ML model and stores data with SQLite.
           </p>
         </div>
-        <div className="bg-stone-800 text-center">
+        <div className=" text-center">
           <p className="text-2xl lg:text-3xl text-white w-11/12 lg:w-2/3 mx-auto mb-8">
             Don't want to upload images? Go live using your webcam below!
           </p>

@@ -2,6 +2,7 @@ import { useState } from "react";
 import Image from "react";
 import CloseButton from "./close_button";
 import { TbBinaryTree } from "react-icons/tb";
+
 interface DashProps {
   username: string;
 }

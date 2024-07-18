@@ -2,7 +2,8 @@
 import React, { useState } from "react";
 import CloseButton from "./close_button";
 import { useSnackbar } from 'notistack';
-
+import { CiCircleInfo } from "react-icons/ci";
+import Tooltip from "./Tooltip";
 interface LoginProps {
   isLoggedIn: boolean;
   onLogin: (username: string) => void;
@@ -19,6 +20,7 @@ const Login: React.FC<LoginProps> = ({ isLoggedIn, onLogin, onLogout }) => {
   );
   const [loggingIn, setLoggingIn] = useState(true);
   const snackbar = useSnackbar();
+  const passReqtext = "Password must be at least 6 characters long" + '\n' + "Password cannot be empty";
 
   const changeLoggingStatus = () => {
     setLoggingIn(!loggingIn);
@@ -131,53 +133,42 @@ const Login: React.FC<LoginProps> = ({ isLoggedIn, onLogin, onLogout }) => {
 
   return (
     <div className="w-screen flex items-right justify-center lg:justify-end">
-      <div className="ml-auto w-5/12 lg:w-1/4 p-4">
-        {" "}
-        {/* Added div with ml-auto class for right alignment */}
-        <button
-          className="border-black bg-emerald-700 border-2 justify-right text-center w-full p-4 rounded-lg hover:bg-emerald-800 text-xl lg:text-4xl text-white"
-          onClick={logInOrOut}
-        >
-          <b>{loggedUser}</b>
-        </button>
-      </div>
-
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 h-full flex items-center justify-center bg-black bg-opacity-75">
-          {/* Popup Window */}
-          <div className="w-2/3 h-3/4 bg-white p-4 rounded-lg shadow-lg">
-            {/* Popup Content */}
-            {loggingIn && (
-            <div
-              id="login"
-              className="items-center w-full h-full bg-green-50 rounded shadow flex flex-col justify-between between p-3"
-            >
+    <div className="ml-auto w-5/12 lg:w-1/4 p-4">
+      <button
+        className="border-black bg-emerald-700 border-2 justify-right text-center w-full p-4 rounded-lg hover:bg-emerald-800 text-xl lg:text-4xl text-white"
+        onClick={logInOrOut}
+      >
+        <b>{loggedUser}</b>
+      </button>
+    </div>
+  
+    {isModalOpen && (
+      <div className="fixed inset-0 z-50 h-full flex items-center justify-center bg-black bg-opacity-75">
+        <div className="w-1/2 h-5/6 bg-white p-4 rounded-lg shadow-lg">
+          {loggingIn && (
+            <div className="flex flex-col h-full">
               <div className="text-green-500 h-full">
-                <div className="border-4 border-dotted border-green-500 p-5 h-full space-y-4">
-                  <label className="text-m font-bold after:content-['*'] after:text-red-400 py-4">
-                    Username{" "}
+                <div className=" border-dotted border-green-500 p-2 h-full flex flex-col justify-around">
+                  <label className="text-m font-bold py-2">
+                    Username
                   </label>
                   <input
-                    className="w-3/4 p-2 mb-2 mt-1 outline-none ring-none focus:ring-2 focus:ring-green-500" 
+                    className="p-2 mb-2 mt-1 outline-none ring-2 ring-green-500"
                     type="text"
                     value={username}
-                    onChange={(e) => {
-                      setUsername(e.target.value);
-                    }}
+                    onChange={(e) => setUsername(e.target.value)}
                   />
-                  <label className="text-m font-bold after:content-['*'] after:text-red-400 py-4">
-                    Password{" "}
+                  <label className="text-m font-bold py-4">
+                    Password
                   </label>
                   <input
-                    className="w-3/4 p-2 mb-2 mt-1 outline-none ring-none focus:ring-2 focus:ring-green-500"
+                    className="p-2 mb-2 mt-1 outline-none ring-2 ring-green-500"
                     type="password"
                     value={password}
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                    }}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                   <button
-                    className="w-3/5 rounded bg-green-500 text-indigo-50 p-2 text-center font-bold hover:bg-green-400"
+                    className="w-full rounded bg-green-500 text-indigo-50 p-2 text-center font-bold hover:bg-green-400"
                     onClick={submitForm}
                   >
                     Log In
@@ -185,46 +176,42 @@ const Login: React.FC<LoginProps> = ({ isLoggedIn, onLogin, onLogout }) => {
                   <div className="text-4xl">
                     <b>or...</b>
                   </div>
-                  <button className='text-6xl hover:underline'
-                  onClick={changeLoggingStatus}>
-                    <b>Create a new account</b>
+                  <button className="text-6xl hover:underline" onClick={changeLoggingStatus}>
+                    <b>Create account</b>
                   </button>
-                  
                 </div>
               </div>
             </div>
-            )}
-            {!loggingIn && (
-              <div
-              id="login"
-              className="items-center w-full h-full bg-green-50 rounded shadow flex flex-col justify-between between p-3"
-            >
+          )}
+          {!loggingIn && (
+            <div className="flex flex-col h-full">
               <div className="text-green-500 h-full">
-                <div className="border-4 border-dotted border-green-500 p-5 h-full space-y-4">
-                  <label className="text-m font-bold after:content-['*'] after:text-red-400 py-4">
-                    Username{" "}
+                <div className=" border-dotted border-green-500 p-2 h-full flex flex-col justify-around">
+                  <label className="text-m font-bold py-2">
+                    Username
                   </label>
                   <input
-                    className="w-3/4 p-2 mb-2 mt-1 outline-none ring-none focus:ring-2 focus:ring-green-500" 
+                    className="p-2 mb-2 mt-1 outline-none ring-2 ring-green-500"
                     type="text"
                     value={username}
-                    onChange={(e) => {
-                      setUsername(e.target.value);
-                    }}
+                    onChange={(e) => setUsername(e.target.value)}
                   />
-                  <label className="text-m font-bold after:content-['*'] after:text-red-400 py-4">
-                    Password{" "}
+                  <label className="flex items-center justify-center text-m font-bold py-4">
+                    <span className="flex items-center">
+                      Password
+                      <Tooltip message="Password must be at least 8 characters">
+                        <CiCircleInfo className="h-8 w-8 ml-2" />
+                      </Tooltip>                    
+                    </span>
                   </label>
                   <input
-                    className="w-3/4 p-2 mb-2 mt-1 outline-none ring-none focus:ring-2 focus:ring-green-500"
+                    className="p-2 mb-2 mt-1 outline-none ring-2 ring-green-500"
                     type="password"
                     value={password}
-                    onChange={(e) => {
-                      setPassword(e.target.value);
-                    }}
+                    onChange={(e) => setPassword(e.target.value)}
                   />
                   <button
-                    className="w-3/5 rounded bg-green-500 text-indigo-50 p-2 text-center font-bold hover:bg-green-400"
+                    className="w-full rounded bg-green-500 text-indigo-50 p-2 text-center font-bold hover:bg-green-400"
                     onClick={submitForm}
                   >
                     Create
@@ -232,20 +219,18 @@ const Login: React.FC<LoginProps> = ({ isLoggedIn, onLogin, onLogout }) => {
                   <div className="text-4xl">
                     <b>or...</b>
                   </div>
-                  <button className='text-6xl hover:underline'
-                  onClick={changeLoggingStatus}>
-                    <b>Login instead</b>
+                  <button className="text-6xl hover:underline" onClick={changeLoggingStatus}>
+                    <b>Login</b>
                   </button>
                 </div>
               </div>
             </div>
-            )
-            }
-          </div>
-          <CloseButton onClick={closeModal} />
+          )}
         </div>
-      )}
-    </div>
+        <CloseButton onClick={closeModal} />
+      </div>
+    )}
+  </div>
   );
 };
 

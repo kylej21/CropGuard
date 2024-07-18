@@ -70,7 +70,7 @@ function Dash({ username }: DashProps) {
       {isCanvasOpen && (
         <div className="fixed inset-0 z-50 h-full flex items-center justify-center bg-black bg-opacity-75">
           {/* Popup Window */}
-          <div className="flex-col w-4/5 h-5/6 p-4 rounded-lg shadow-lg text-black overflow-y-scroll space-y-4 bg-emerald-200">
+          <div className="flex-col w-4/5 h-5/6 p-4 rounded-lg shadow-lg text-black overflow-y-scroll space-y-4 bg-green-500">
             <div className="flex text-start w-full items-center justify-start text-black font-semibold text-4xl pl-4">
               <div className="h-full w-5/12 p-2 rounded-xl bg-white border-black border-2 text-center">
               {username}
