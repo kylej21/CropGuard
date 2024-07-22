@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import React from "react";
 import { TbBinaryTree } from "react-icons/tb";
 import MarkdownRenderer from "./MarkdownRenderer";
+import { useSnackbar } from 'notistack';
+
 interface BarChartProps {
   username: string;
 }
@@ -10,14 +12,26 @@ interface BarChartProps {
 const ActionableInsights: React.FC<BarChartProps> = ({ username }) => {
   const [action, setAction] = useState("");
   const [loading, setLoading] = useState(true);
+  const snackbar = useSnackbar();
 
+  // use effect mounts on load, that way the component only renders once
   useEffect(() => {
     const fetchData = async () => {
-      let insight = await fetch("http://127.0.0.1:5000/insight/" + username)
-        .then((res) => res.json())
-        .then((res) => res["action"]);
-      setAction(insight);
-      setLoading(false);
+      let insight = await fetch("/api/insight/", {
+        method: "POST",
+        body: JSON.stringify({ username: username }),
+      }).then((data)=> {
+        const body = data.json().then((body)=>{
+          if(data.status==200){
+            setAction(body.action);
+            //return body.action
+          }
+          else{
+            snackbar.enqueueSnackbar('Error Loading Insights!', { variant: 'error', autoHideDuration: 2000 });
+          }
+        })
+      })
+     setLoading(false);
     };
     fetchData();
   }, [username]);

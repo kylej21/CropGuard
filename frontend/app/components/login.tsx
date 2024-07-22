@@ -108,17 +108,15 @@ const Login: React.FC<LoginProps> = ({ isLoggedIn, onLogin, onLogout }) => {
           snackbar.enqueueSnackbar('Incorrect Username or Password', { variant: 'error', autoHideDuration: 2000 });}
       });
     }else{
-      fetch("http://127.0.0.1:5000/create/", requestOptions)
-      .then((res)=> res.json())
+      fetch("api/newUser", requestOptions)
       .then((data)=> {
-        if (data["status"] === "Account created") {
+        if(data.status==200){
           snackbar.enqueueSnackbar('Account Created!', { variant: 'success', autoHideDuration: 2000 });
           closeModal();
           setLoggingIn(true);
           setLoggedUser("Logout");
           onLogin(username); // Update isLoggedIn state in parent component
-
-        } 
+        }
         else {
           snackbar.enqueueSnackbar('Username Taken!', { variant: 'error', autoHideDuration: 2000 });}
       })

@@ -38,14 +38,13 @@ function Dash({ username }: DashProps) {
       .then((data) => {
         const body = data.json().then((body)=>{
           if(data.status==200){
-            console.log(body.data)
             enqueueSnackbar('Data Loaded!', { variant: 'success', autoHideDuration: 2000 });
             setImages(body.data);
             setNumSubmissions(body.data.length)
             return data;
           }
           else{
-            enqueueSnackbar('Error Loading Data!', { variant: 'error', autoHideDuration: 2000 });
+            enqueueSnackbar('Error Loading Submissions!', { variant: 'error', autoHideDuration: 2000 });
 
           }
         })
@@ -61,7 +60,6 @@ function Dash({ username }: DashProps) {
           onClick={() => {
             openModal();
             getData();
-            console.log("Dashboard clicked");
           }}
         >
           <b>Dashboard</b>

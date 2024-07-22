@@ -10,7 +10,7 @@ export async function POST(request: NextRequest){
     console.log('add request: '+ body.username)
     try {
         await client.sql`INSERT INTO users (username, password) VALUES (${body.username}, ${body.password})`;
-    return NextResponse.json("successfully added: "+body.username+" to users", {status:201});
+    return NextResponse.json("successfully added: "+body.username+" to users", {status:200});
   } catch (error) {
     return NextResponse.json("error", {status:500});
   }

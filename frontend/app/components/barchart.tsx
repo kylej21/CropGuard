@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Chart from "chart.js/auto";
+import { useSnackbar } from 'notistack';
 
 interface BarChartProps {
   username: string;
@@ -10,26 +11,41 @@ const BarChart: React.FC<BarChartProps> = ({ username }) => {
   const chartInstance = useRef<Chart | null>(null); // Ref to store the Chart instance
   const [numOccurrences, setNumOccurrences] = useState<number[]>([]);
   const [occurrenceTypes, setOccurrenceTypes] = useState<string[]>([]);
+  const snackbar = useSnackbar();
 
   useEffect(() => {
     // Simulated data update or API fetch
     const fetchData = async () => {
       // Replace with your data fetching logic
       let categories = await fetch(
-        "http://127.0.0.1:5000/categories/" + username,
-      )
-        .then((res) => res.json())
-        .then((res) => res["array"]);
+        "/api/categories/" , {
+          method: "POST",
+          body: JSON.stringify({ username: username }),
+        }).then((data)=>{
+          const body = data.json().then((body)=>{
+            if(data.status==200){
+              setOccurrenceTypes(body.data);
+            }
+            else{
+              snackbar.enqueueSnackbar('Error Loading Insights!', { variant: 'error', autoHideDuration: 2000 });
+            }
+          })
+        })
       let occurences = await fetch(
-        "http://127.0.0.1:5000/occurences/" + username,
-      )
-        .then((res) => res.json())
-        .then((res) => res["array"]); // Example data: number of occurrences
-      console.log("OCCURENCES: " + occurences);
-      console.log("CATEGORIES: " + categories);
+        "/api/occurences/", {
+          method: "POST",
+          body: JSON.stringify({ username: username }),
+        }).then((data)=>{
+          const body = data.json().then((body)=>{
+            if(data.status==200){
+              setNumOccurrences(body.data);
 
-      setNumOccurrences(occurences);
-      setOccurrenceTypes(categories);
+            }
+            else{
+              snackbar.enqueueSnackbar('Error Loading Insights!', { variant: 'error', autoHideDuration: 2000 });
+            }
+          })
+        })
     };
 
     fetchData();
