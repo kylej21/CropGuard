@@ -98,8 +98,8 @@ export default function Home() {
         <div className="flex items-center justify-center text-center text-2xl  ">
           <p className="w-11/12 lg:w-2/3">
             We utilized Next.js, Tailwind CSS, and TypeScript for our frontend,
-            incorporating various UI frameworks. Our FastAPI backend hosts a
-            PyTorch ML model and stores data with SQLite.
+            incorporating various UI frameworks. Our  backend hosts a
+            PyTorch ML model and stores data with PostgreSQL.
           </p>
         </div>
         <div className=" text-center">

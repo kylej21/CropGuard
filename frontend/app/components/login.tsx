@@ -42,7 +42,7 @@ const Login: React.FC<LoginProps> = ({ isLoggedIn, onLogin, onLogout }) => {
       } 
       return false;
     }
-    else if(password=="password" || password.length<6){
+    else if(password=="password" || password.length<8){
       if(loggingIn){
         snackbar.enqueueSnackbar('Incorrect password or username!', { variant: 'error', autoHideDuration: 2000 });
       }else{
