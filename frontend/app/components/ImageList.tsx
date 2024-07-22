@@ -1,6 +1,7 @@
 // components/ImageList.tsx
 
 import React from "react";
+import MarkdownRenderer from "./MarkdownRenderer";
 
 interface ImageListProps {
   images: [string, string][];
@@ -15,7 +16,7 @@ const ImageList: React.FC<ImageListProps> = ({ images }) => {
             <div className="pb-4 text-3xl">Result: {tag}</div>
           </div>
           <div className="text-base w-3/4 border-2 p-2 border-emerald-200 bg-emerald-100 rounded-lg">
-            {desc}
+          <MarkdownRenderer markdownText={desc} />
           </div>
         </div>
       ))}
