@@ -96,6 +96,14 @@ export default function Learning({ params }: { params: { user: string } }): JSX.
       console.error('Error adding user:', error);
     }
   };
+  const testPy = async ()=>{
+    try {
+      const data = await fetch('https://crop-guard-mlh-osting.vercel.app/about');
+      console.log(data);
+    } catch (error) {
+      console.error('Error using py route');
+    }
+  }
   return (
     <main className="text-center flex-col w-full min-h-screen items-center bg-[url('./public/grassback.jpg')] bg-cover bg-no-repeat bg-center text-black text-7xl">
       {users.map((user) => (
@@ -114,6 +122,7 @@ export default function Learning({ params }: { params: { user: string } }): JSX.
       ))}
     <input placeholder='pretend this is an image' onChange={(e)=>setImageInput(e.target.value)}></input>
     <button onClick={addSubs}>Add submission</button>
+    <button onClick = {testPy}>Test Py</button>
     </main>
   );
 }
