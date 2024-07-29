@@ -1,11 +1,11 @@
 "use client";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Popout from "./components/popout";
 import Login from "./components/login";
 import { title_font } from "./fonts";
 import title from "./public/newTitle.png";
-import Dash from "./components/dashboard";
+import NewDash from "./components/newDashboard";
 import Link from "next/link";
 import { SnackbarProvider } from "notistack";
 
@@ -16,20 +16,34 @@ import { SnackbarProvider } from "notistack";
 export default function Home() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState<string>("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleLogin = (user: string) => {
     setIsLoggedIn(true);
     setUsername(user);
   };
-
+  const handleModal = () => {
+    setIsModalOpen(!isModalOpen)
+  };
   const handleLogout = () => {
     setIsLoggedIn(false);
     setUsername("");
   };
 
+
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = 'hidden'; // Disable scrolling
+    } else {
+      document.body.style.overflow = 'auto'; // Enable scrolling
+    }
+    return () => {
+      document.body.style.overflow = 'auto'; // Cleanup on unmount
+    };
+  }, [isModalOpen]);
   return (
     <SnackbarProvider>
-    <div>
+    <div className="overflow-y-auto">
       <div className="z-10 w-screen h-screen items-center justify-around font-mono text-sm lg:flex-col bg-[url('./public/grassback.jpg')] bg-cover bg-no-repeat bg-center">
         <div className="h-3/4 text-8xl text-black w-full text-center flex-col">
           <div className="flex-col h-1/4 w-screen">
@@ -47,6 +61,7 @@ export default function Home() {
                       isLoggedIn={isLoggedIn}
                       onLogin={handleLogin}
                       onLogout={handleLogout}
+                      onOpenModal={handleModal}
                     />
                   </div>
                 </div>
@@ -76,7 +91,7 @@ export default function Home() {
       <div className="flex-col bg-gradient-to-b from-emerald-900 from-0% via-50% to-100% via-gray-800 to-emerald-900 h-auto items-center justify-center text-center text-6xl p-10 lg:p-20 space-y-20 w-screen text-white">
         <div className="flex justify-center w-full items-center">
           <div className=" w-full lg:w-1/2 pb-12">
-            {isLoggedIn && <Dash username={username} />}
+            {isLoggedIn && <NewDash username={username} onOpenModal={handleModal} />}
           </div>
         </div>
         <div></div>

@@ -36,28 +36,31 @@ const ActionableInsights: React.FC<BarChartProps> = ({ username }) => {
     fetchData();
   }, [username]);
   return (
-    <div>
-      {loading && (
-        <div className="flex items-start justify-start">
-          <div className="flex-col gap-4 w-full flex items-center justify-start">
-            {/* tuff binary tree */}
-            <div className="w-80 h-80 border-8 text-green-400 text-4xl animate-spin border-gray-300 flex items-start justify-center border-t-green-400 rounded-full">
-              <TbBinaryTree className="w-40 h-40" />
-            </div>
-          </div>
-        </div>
-      )}
-      <div className="flex flex-col p-4 h-full space-y-4">
-        <div className="mb-4 overflow-y-auto">
-          <div className="justify-start text-center">
-            <div className="pb-4 text-3xl">Insights:</div>
-          </div>
-          <div className="text-base w-full border-2 p-2 border-emerald-200 bg-emerald-100 rounded-lg">
-            <MarkdownRenderer markdownText={action} />
+    <div className="w-3/4 p-4 flex flex-col">
+    {loading && (
+      <div className="flex items-center justify-center h-full w-full">
+        <div className="flex-col gap-4 w-full flex items-center justify-center">
+          
+          {/* tuff binary tree */}
+          <div className="w-80 h-80 border-8 text-green-400 text-4xl animate-spin border-gray-300 flex items-center justify-center border-t-green-400 rounded-full">
+            <TbBinaryTree className="w-40 h-40" />
           </div>
         </div>
       </div>
+    )}
+    {!loading && (
+    <div className="flex flex-col p-4 h-full space-y-4 justify-start w-full">
+      <div className="mb-4 w-full h-full">
+        <div className="justify-center text-center w-full h-1/6">
+          <div className="pb-4 text-5xl w-full"><b>Insights:</b></div>
+        </div>
+        <div className="text-base w-full border-2 p-2 border-emerald-200 bg-emerald-100 rounded-lg h-5/6 overflow-y-auto">
+          <MarkdownRenderer markdownText={action} />
+        </div>
+      </div>
     </div>
+    )}
+  </div>
   );
 };
 

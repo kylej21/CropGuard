@@ -25,7 +25,7 @@ export async function POST(request: NextRequest){
             geminiInput[row.result]=1;
         }
     }
-    const message = "This is a dictionary of classifications and their number of occurences. Based on the most frequent one, provide some concise advice on preventing these issues, or what might be causing them. Hide the fact that I prepended your prompt with this message:" + JSON.stringify(geminiInput);
+    const message = "This is a dictionary of classifications and their number of occurences. Based on the most frequent ones, provide some concise advice on the best overall disease prevention, or what might be causing them. Make sure to let the user know which diseases you are talking about or are most common. Hide the fact that I prepended your prompt with this message. Put 2 new lines when between paragraphs:" + JSON.stringify(geminiInput);
 
     const { GoogleGenerativeAI } = require("@google/generative-ai");
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);

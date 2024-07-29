@@ -45,7 +45,7 @@ function Popout({ username }: DashProps) {
       method: "POST",
       body: formData,
     };
-    await fetch("http://127.0.0.1:5000/upload/", requestOptions)
+    await fetch('https://crop-guard-mlh-osting.vercel.app/about', requestOptions)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
