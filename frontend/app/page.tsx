@@ -82,7 +82,7 @@ export default function Home() {
           </div>
           <div className="h-3/4 flex text-white items-center justify-center text-center align-middle">
             {/* Content */}
-            {isLoggedIn && <Popout username={username} />}
+            {isLoggedIn && <Popout username={username} onOpenModal={handleModal}/>}
           </div>
         </div>
       </div>

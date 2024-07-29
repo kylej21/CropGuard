@@ -5,8 +5,9 @@ import { TbBinaryTree } from "react-icons/tb";
 
 interface DashProps {
   username: string;
+  onOpenModal: () => void;
 }
-function Popout({ username }: DashProps) {
+function Popout({ username ,onOpenModal}: DashProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   let [image, changeImage] = useState<File | null>(null);
   let [response, changeResponse] = useState("Upload an image of the plant you want a diagnosis for and click analyze to start!");
@@ -20,10 +21,12 @@ function Popout({ username }: DashProps) {
 
   const openModal = () => {
     setIsModalOpen(true);
+    onOpenModal();
   };
 
   const closeModal = () => {
     setIsModalOpen(false);
+    onOpenModal();
     changeResponse("Upload an image of the plant you want a diagnosis for and click analyze to start!");
   };
 
