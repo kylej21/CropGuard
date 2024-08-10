@@ -18,7 +18,7 @@ const fetchDescription = async (body: any) => {
 export async function POST(request: NextRequest){
     noStore();
     const body = await request.json();
-    console.log(body)
+    console.log("backend body log", body.file,body.extension,body.username);
     const client = await sql.connect();
     console.log('add submission: '+ body.username)
     const [response,description] = await fetchDescription(body) // <- put image as param later
