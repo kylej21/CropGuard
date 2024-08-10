@@ -2,4 +2,7 @@
 /lib
 /bin
 /include
+/Scripts
+/share
 .env
+pyvenv.cfg

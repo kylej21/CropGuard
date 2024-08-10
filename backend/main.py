@@ -45,7 +45,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 #Model imports
-from transformers import pipeline
+from transformers import pipeline, AutoImageProcessor, TFAutoModelForImageClassification
 
 # image processing imports
 from PIL import Image
@@ -97,7 +97,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-pipe = pipeline("image-classification", model="gianlab/swin-tiny-patch4-window7-224-finetuned-plantdisease")
+
+classification_processor = AutoImageProcessor.from_pretrained("gianlab/swin-tiny-patch4-window7-224-finetuned-plantdisease")
+classification_model = TFAutoModelForImageClassification.from_pretrained("gianlab/swin-tiny-patch4-window7-224-finetuned-plantdisease", from_pt=True)
+pipe = pipeline("image-classification", model=classification_model, image_processor=classification_processor)
+
+# pipe = pipeline("image-classification", model="gianlab/swin-tiny-patch4-window7-224-finetuned-plantdisease")
 
 def model_forward(image: Image) -> str:
 

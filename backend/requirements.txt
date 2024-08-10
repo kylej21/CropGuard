@@ -7,6 +7,7 @@ cachetools==5.3.3
 certifi==2024.6.2
 charset-normalizer==3.3.2
 click==8.1.7
+colorama==0.4.6
 decorator==5.1.1
 dnspython==2.6.1
 email_validator==2.2.0
@@ -85,9 +86,12 @@ starlette==0.37.2
 sympy==1.12.1
 tensorboard==2.16.2
 tensorboard-data-server==0.7.2
+tensorflow==2.16.2
+tensorflow-intel==2.16.2
 termcolor==2.4.0
 tf_keras==2.16.0
 tokenizers==0.19.1
+torch==2.4.0
 tqdm==4.66.4
 traitlets==5.14.3
 transformers==4.41.2
@@ -97,7 +101,6 @@ ujson==5.10.0
 uritemplate==4.1.1
 urllib3==2.2.2
 uvicorn==0.30.1
-uvloop==0.19.0
 watchfiles==0.22.0
 wcwidth==0.2.13
 websockets==12.0
