@@ -118,9 +118,14 @@ export default function Home() {
           </p>
         </div>
         <div className=" text-center">
+          {/*
+
+          HIDDEN SINCE INCOMPLETE AT TIME OF SUBMISSION
+
           <p className="text-2xl lg:text-3xl text-white w-11/12 lg:w-2/3 mx-auto mb-8">
             Don't want to upload images? Go live using your webcam below!
           </p>
+          
           <div className="flex justify-center">
             <Link href="/live">
               <div className="bg-red-500 text-white py-4 px-8 lg:py-6 lg:px-12 rounded-lg border border-white hover:bg-red-600 transition duration-300 ease-in-out">
@@ -128,6 +133,7 @@ export default function Home() {
               </div>
             </Link>
           </div>
+          */}
         </div>
       </div>
     </div>
