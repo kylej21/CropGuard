@@ -2,6 +2,7 @@ import { useState } from "react";
 import Image from "react";
 import CloseButton from "./close_button";
 import { TbBinaryTree } from "react-icons/tb";
+import { enqueueSnackbar } from "notistack";
 
 interface DashProps {
   username: string;
@@ -34,7 +35,6 @@ function Popout({ username ,onOpenModal}: DashProps) {
     if (loading || !image) return;
 
     changeLoading(true);
-    console.log("Submitting: " + image);
 
     // body of POST request to send image
     const formData = new FormData();
@@ -51,7 +51,6 @@ function Popout({ username ,onOpenModal}: DashProps) {
     await fetch('http://127.0.0.1:5000/upload/', requestOptions)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         if (data["status"] === "healthy") {
           changeResponse("No threat! Plant is Healthy!");
         } else {
@@ -62,10 +61,11 @@ function Popout({ username ,onOpenModal}: DashProps) {
           submissionData.append("username", username);
           submissionData.append("result", data["status"]);
           submissionData.append("description", data["explanation"]);
+          enqueueSnackbar('Submission Successful!', { variant: 'success', autoHideDuration: 2000 });
           fetch('/api/newSubmission',{
             method: 'POST',
             body: submissionData
-          }).then((res)=>console.log(res))
+          })
         }
       });
     changeLoading(false);

@@ -52,7 +52,6 @@ function NewDash({ username ,onOpenModal}: DashProps) {
       .then((data) => {
         const body = data.json().then((body)=>{
           if(data.status==200){
-            enqueueSnackbar('Data Loaded!', { variant: 'success', autoHideDuration: 2000 });
             setImages(body.data);
             setNumSubmissions(body.data.length)
             return data;
