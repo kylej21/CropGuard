@@ -170,25 +170,24 @@ async def receive_file(file: UploadFile = File(...), extension: str = Form(...),
         img = Image.open(io.BytesIO(request_object_content))
         response = model_forward(img)
 
-        print(response)
         with tempfile.NamedTemporaryFile(delete=False, suffix=f".{file_extension}") as temp_file:
             contents = await file.read()
             temp_file.write(contents)
             temp_file_path = pathlib.Path(temp_file.name)
 
-        out = generate_gemini_explanation(temp_file_path, response)
-        print(out)
-        temp_file_path.unlink()
+        #out = generate_gemini_explanation(temp_file_path, response)
+        #print(out)
+        #temp_file_path.unlink()
 
         # save image to SQL DB
-        bytes_data = io.BytesIO(request_object_content).read()
-        base64_data = base64.b64encode(bytes_data).decode('utf-8')
-        params = (username, response, out)
-        query = "INSERT INTO submissions (username, result, description) VALUES (?, ?, ?)"
-        cursor.execute(query, params)
-        conn.commit()
-
-        return {"status":response, "explanation": out}
+        #bytes_data = io.BytesIO(request_object_content).read()
+        #base64_data = base64.b64encode(bytes_data).decode('utf-8')
+        #params = (username, response, out)
+        #query = "INSERT INTO submissions (username, result, description) VALUES (?, ?, ?)"
+        #cursor.execute(query, params)
+        #conn.commit()
+        print("classified as",response)
+        return {"status":response}
 
     except Exception as e:
         return JSONResponse(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, content={"message": str(e)})

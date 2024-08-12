@@ -10,7 +10,7 @@ export async function POST(request: NextRequest){
   try{
     const body = await request.json();
 
-    const message = "Here is a diagnosis for a sick plant disease. Provide some useful info about the disease and ways to fix it: " + body.status;
+    const message = "Here is a diagnosis for a sick plant disease. Provide some useful info about the disease and ways to fix it: " + body.status + ". (Answer with 50 words max)";
     const { GoogleGenerativeAI } = require("@google/generative-ai");
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
 

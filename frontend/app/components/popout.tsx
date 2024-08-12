@@ -4,7 +4,7 @@ import CloseButton from "./close_button";
 import { TbBinaryTree } from "react-icons/tb";
 import { enqueueSnackbar } from "notistack";
 import { data } from "@tensorflow/tfjs";
-
+import MarkdownRenderer from "./MarkdownRenderer";
 interface DashProps {
   username: string;
   onOpenModal: () => void;
@@ -177,7 +177,7 @@ function Popout({ username ,onOpenModal}: DashProps) {
                     </div>
                   )}
                   <div className="text-black justify-center text-lg lg:text-2xl p-6 overflow-y-auto max-h-1/2">
-                      {response}
+                      <MarkdownRenderer markdownText={response} />
                     </div>
                 </div>
                 {!loading && (
