@@ -22,6 +22,7 @@ function Popout({ username ,onOpenModal}: DashProps) {
   const generateExplanation = (status: string) => {
     const message = "Here is a diagnosis for a sick plant disease. Provide some useful info about the disease and ways to fix it: " + status;
     const { GoogleGenerativeAI } = require("@google/generative-ai");
+    console.log(process.env.GEMINI_KEY)
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
 
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
