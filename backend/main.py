@@ -232,6 +232,7 @@ async def login(username:str = Form(...), password:str = Form(...)):
         conn.commit()
         print("Account created")
         return {"status":"Account created"}
+    
 @app.post("/login")
 async def login(username:str = Form(...), password:str = Form(...)):
     cursor.execute('SELECT * FROM users WHERE username=? AND password=?', (username,password))

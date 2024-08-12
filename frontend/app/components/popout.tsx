@@ -38,10 +38,10 @@ function Popout({ username ,onOpenModal}: DashProps) {
 
     // body of POST request to send image
     const formData = new FormData();
+    const ext = image.name.split(".").pop() || "";
     formData.append("file", image, image.name);
-    formData.append("extension", image.name.split(".").pop() || "");
+    formData.append("extension", ext);
     formData.append("username", username);
-    console.log(image.name);
 
     // make post request, and display prompt result
     const requestOptions = {

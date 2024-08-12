@@ -22,7 +22,7 @@
     "chartjs-plugin-datalabels": "^2.2.0",
     "framer-motion": "^11.2.11",
     "marked": "^13.0.1",
-    "next": "14.2.4",
+    "next": "^14.2.4",
     "node-fetch": "^3.3.2",
     "nodemailer": "^6.9.14",
     "notistack": "^3.0.1",

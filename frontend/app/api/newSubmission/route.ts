@@ -12,6 +12,7 @@ const fetchDescription = async (body: any) => {
     })
     console.log("in fetchDecription",body);
     const values = await (await payload).json();
+
     // for now return Tomato Blight
     return [values.status,values.explanation];
 }
@@ -19,20 +20,23 @@ export async function POST(request: NextRequest){
     noStore();
     console.log("before trying anything in api route")
     try {
-        const body = await request.json();
-        console.log("backend body log", body.file, body.extension, body.username);
+        const formData = await request.formData();
+        const [file, extension, username] = [formData.get('file'), formData.get('extension'), formData.get('username')];
+
+        console.log("backend body log", file, extension, username);
 
         const client = await sql.connect();
 
-        console.log('add submission: ' + body.username);
+        console.log('add submission: ' + username);
 
-        const [response, description] = await fetchDescription(body.f); // <- Ensure `body.file` is correctly handled
+        const [response, description] = await fetchDescription(file); // <- Ensure `body.file` is correctly handled
 
-        console.log(`${body.username}, ${response}, ${description}`);
+        console.log(`${username}, ${response}, ${description}`);
 
-        await client.sql`INSERT INTO submissions (username, result, description) VALUES (${body.username}, ${response}, ${description})`;
+        await client.sql`INSERT INTO submissions (username, result, description) VALUES (${username?.toString()}, ${response}, ${description})`;
 
-        return NextResponse.json("successfully added: " + body.username + " to submissions", { status: 201 });
+        console.log("Successfully added!")
+        return NextResponse.json("successfully added: " + username + " to submissions", { status: 201 });
     } catch (error) {
         console.error('Error in POST handler:', error);
         return NextResponse.json("error", { status: 500 });
