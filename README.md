@@ -12,9 +12,7 @@ The frontend is already hosted on https://crop-guard-peach.vercel.app/. However,
    This might take some time.
 5. Start server by running ```python main.py```
 
-**IMPORTANT**: You will need a .env file in the frontend directory, containing information such as Gemini API key, database credentials, etc. If you are a Gemini Competition judge, the .env file should be in a zip file, the link to which is in the Google Form submission for the contest.
-
-From there, you should be able to use Crop Guard through the above link. Without backend, while the website will load it will not function correctly.
+From there, you should be able to use Crop Guard through the above link.
 
 ## Tech stack
 
@@ -22,7 +20,7 @@ Frontend - Next.js, Tailwind CSS, TypeScript
 Backend - Python, FastAPI, PyTorch, SQLite
 
 ## Demo
-video: https://youtu.be/x2lnc4zBGOo
+[Video Link](https://www.youtube.com/watch?v=jcIEhS2d20o)
 
 <img width="1470" alt="Screenshot 2024-06-23 at 10 11 24 AM" src="https://github.com/kylej21/CropGuard/assets/111208810/55c0b262-8148-470e-80e4-fe45d89fb2eb">
 
