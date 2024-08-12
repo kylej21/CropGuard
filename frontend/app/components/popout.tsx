@@ -3,6 +3,7 @@ import Image from "react";
 import CloseButton from "./close_button";
 import { TbBinaryTree } from "react-icons/tb";
 import { enqueueSnackbar } from "notistack";
+import { data } from "@tensorflow/tfjs";
 
 interface DashProps {
   username: string;
@@ -20,15 +21,14 @@ function Popout({ username ,onOpenModal}: DashProps) {
     }
   };
   const generateExplanation = async (status: string) => {
-    const message = "Here is a diagnosis for a sick plant disease. Provide some useful info about the disease and ways to fix it: " + status;
-    const { GoogleGenerativeAI } = require("@google/generative-ai");
-    console.log(process.env.GEMINI_KEY)
-    const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
-
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
-    const result = await model.generateContent(message);
-    const out=await result.response.text();
-    return out;
+    const explanation = fetch('/api/generate', {
+      method: 'POST',
+      
+      body: JSON.stringify({ status: status }),
+    })
+    const payload = await (await explanation).json();
+    console.log(payload)
+    return payload["explanation"];
   }
   const openModal = () => {
     setIsModalOpen(true);
