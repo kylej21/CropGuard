@@ -19,7 +19,16 @@ function Popout({ username ,onOpenModal}: DashProps) {
       changeImage(event.target.files[0]);
     }
   };
+  const generateExplanation = (status: string) => {
+    const message = "Here is a diagnosis for a sick plant disease. Provide some useful info about the disease and ways to fix it: " + status;
+    const { GoogleGenerativeAI } = require("@google/generative-ai");
+    const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
 
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
+    const result = model.generateContent(message);
+    const out=result.response.text();
+    return out;
+  }
   const openModal = () => {
     setIsModalOpen(true);
     onOpenModal();
@@ -54,13 +63,14 @@ function Popout({ username ,onOpenModal}: DashProps) {
         if (data["status"] === "healthy") {
           changeResponse("No threat! Plant is Healthy!");
         } else {
+          let explanation = generateExplanation(data["status"])
           changeResponse(
-            "Threat: " + data["status"] + ". " + data["explanation"]
+            "Threat: " + data["status"] + ". " + explanation
           );
           const submissionData = new FormData();
           submissionData.append("username", username);
           submissionData.append("result", data["status"]);
-          submissionData.append("description", data["explanation"]);
+          submissionData.append("description", explanation);
           enqueueSnackbar('Submission Successful!', { variant: 'success', autoHideDuration: 2000 });
           fetch('/api/newSubmission',{
             method: 'POST',
