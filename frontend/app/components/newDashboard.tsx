@@ -24,8 +24,7 @@ function NewDash({ username ,onOpenModal}: DashProps) {
     { name: 'Insights', id: 'insights' },
     { name: 'Graphs', id: 'graphs' },
     { name: 'Submissions', id: 'submissions' },
-    { name: 'Button 3', id: 'button3' },
-    { name: 'Button 4', id: 'button4' }
+
   ];
 
   const openModal = () => {
@@ -109,7 +108,7 @@ function NewDash({ username ,onOpenModal}: DashProps) {
                 {buttons.map((button) => (
                 <button
                 key={button.id}
-                className={`w-full h-1/5 text-3xl ${dashSelected === button.name ? 'bg-green-300' : ''} hover:bg-green-300 ${button.id === 'insights' ? 'rounded-t-lg' : button.id === 'button4' ? 'rounded-b-lg' : ''}`}
+                className={`w-full h-1/3 text-3xl ${dashSelected === button.name ? 'bg-green-300' : ''} hover:bg-green-300 ${button.id === 'insights' ? 'rounded-t-lg' : button.id === 'button4' ? 'rounded-b-lg' : ''}`}
                 onClick={() => setDashSelected(button.name)}
                 >
                     {button.name}
