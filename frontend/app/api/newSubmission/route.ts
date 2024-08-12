@@ -12,7 +12,7 @@ const fetchDescription = async (body: any) => {
     })
     console.log("in fetchDecription",body);
     const values = await (await payload).json();
-
+    console.log(values)
     // for now return Tomato Blight
     return [values.status,values.explanation];
 }
