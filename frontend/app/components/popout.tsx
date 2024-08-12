@@ -19,15 +19,15 @@ function Popout({ username ,onOpenModal}: DashProps) {
       changeImage(event.target.files[0]);
     }
   };
-  const generateExplanation = (status: string) => {
+  const generateExplanation = async (status: string) => {
     const message = "Here is a diagnosis for a sick plant disease. Provide some useful info about the disease and ways to fix it: " + status;
     const { GoogleGenerativeAI } = require("@google/generative-ai");
     console.log(process.env.GEMINI_KEY)
     const genAI = new GoogleGenerativeAI(process.env.GEMINI_KEY);
 
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash"});
-    const result = model.generateContent(message);
-    const out=result.response.text();
+    const result = await model.generateContent(message);
+    const out=await result.response.text();
     return out;
   }
   const openModal = () => {
@@ -44,43 +44,57 @@ function Popout({ username ,onOpenModal}: DashProps) {
   async function handleSubmission() {
     if (loading || !image) return;
 
-    changeLoading(true);
+    try {
+        changeLoading(true);
 
-    // body of POST request to send image
-    const formData = new FormData();
-    const ext = image.name.split(".").pop() || "";
-    formData.append("file", image, image.name);
-    formData.append("extension", ext);
-    formData.append("username", username);
+        // Body of POST request to send image
+        const formData = new FormData();
+        const ext = image.name.split(".").pop() || "";
+        formData.append("file", image, image.name);
+        formData.append("extension", ext);
+        formData.append("username", username);
 
-    // make post request, and display prompt result
-    const requestOptions = {
-      method: "POST",
-      body: formData,
-    };
-    await fetch('http://127.0.0.1:5000/upload/', requestOptions)
-      .then((res) => res.json())
-      .then((data) => {
+        // Make POST request and get response
+        const requestOptions = {
+            method: "POST",
+            body: formData,
+        };
+        
+        const response = await fetch('http://127.0.0.1:5000/upload/', requestOptions);
+        const data = await response.json();
+
         if (data["status"] === "healthy") {
-          changeResponse("No threat! Plant is Healthy!");
+            changeResponse("No threat! Plant is Healthy!");
         } else {
-          let explanation = generateExplanation(data["status"])
-          changeResponse(
-            "Threat: " + data["status"] + ". " + explanation
-          );
-          const submissionData = new FormData();
-          submissionData.append("username", username);
-          submissionData.append("result", data["status"]);
-          submissionData.append("description", explanation);
-          enqueueSnackbar('Submission Successful!', { variant: 'success', autoHideDuration: 2000 });
-          fetch('/api/newSubmission',{
-            method: 'POST',
-            body: submissionData
-          })
+            const explanation = await generateExplanation(data["status"]); // Ensure this is awaited
+
+            changeResponse(
+                "Threat: " + data["status"] + ". " + explanation
+            );
+
+            const submissionData = new FormData();
+            submissionData.append("username", username);
+            submissionData.append("result", data["status"]);
+            submissionData.append("description", explanation);
+
+            // Notify user of successful submission
+            enqueueSnackbar('Submission Successful!', { variant: 'success', autoHideDuration: 2000 });
+
+            // Send the new submission
+            await fetch('/api/newSubmission', {
+                method: 'POST',
+                body: submissionData,
+            });
         }
-      });
-    changeLoading(false);
-  }
+    } catch (error) {
+        console.error('Error handling submission:', error);
+        // Handle errors, show an error message to the user, etc.
+        enqueueSnackbar('Submission failed. Please try again.', { variant: 'error', autoHideDuration: 2000 });
+    } finally {
+        changeLoading(false);
+    }
+}
+
 
   return (
     <div className="w-screen flex justify-center items-center h-screen">
