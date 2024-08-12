@@ -48,7 +48,7 @@ function Popout({ username ,onOpenModal}: DashProps) {
       method: "POST",
       body: formData,
     };
-    await fetch('/api/newSubmission', requestOptions)
+    await fetch('http://127.0.0.1:5000/upload/', requestOptions)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
@@ -58,6 +58,14 @@ function Popout({ username ,onOpenModal}: DashProps) {
           changeResponse(
             "Threat: " + data["status"] + ". " + data["explanation"]
           );
+          const submissionData = new FormData();
+          submissionData.append("username", username);
+          submissionData.append("result", data["status"]);
+          submissionData.append("description", data["explanation"]);
+          fetch('/api/newSubmission',{
+            method: 'POST',
+            body: submissionData
+          }).then((res)=>console.log(res))
         }
       });
     changeLoading(false);

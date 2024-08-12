@@ -19,21 +19,19 @@ const fetchDescription = async (body: any) => {
 export async function POST(request: NextRequest){
     noStore();
     console.log("before trying anything in api route")
+    
     try {
         const formData = await request.formData();
-        const [file, extension, username] = [formData.get('file'), formData.get('extension'), formData.get('username')];
+        const [username, result, description] = [formData.get('username'), formData.get('result'), formData.get('description')];
 
-        console.log("backend body log", file, extension, username);
 
         const client = await sql.connect();
 
-        console.log('add submission: ' + username);
 
-        const [response, description] = await fetchDescription(file); // <- Ensure `body.file` is correctly handled
 
-        console.log(`${username}, ${response}, ${description}`);
+        console.log(`${username}, ${result}, ${description}`);
 
-        await client.sql`INSERT INTO submissions (username, result, description) VALUES (${username?.toString()}, ${response}, ${description})`;
+        await client.sql`INSERT INTO submissions (username, result, description) VALUES (${username?.toString()}, ${result?.toString()}, ${description?.toString()})`;
 
         console.log("Successfully added!")
         return NextResponse.json("successfully added: " + username + " to submissions", { status: 201 });
